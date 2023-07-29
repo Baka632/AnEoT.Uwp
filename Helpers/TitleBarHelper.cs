@@ -32,19 +32,12 @@ namespace AnEoT.Uwp.Helpers
 
                 #region TitleBarColor
                 PresentationTitleBar.ButtonBackgroundColor = Colors.Transparent;
-                Color ForegroundColor;
-                switch (Application.Current.RequestedTheme)
+                Color ForegroundColor = Application.Current.RequestedTheme switch
                 {
-                    case ApplicationTheme.Light:
-                        ForegroundColor = Colors.Black;
-                        break;
-                    case ApplicationTheme.Dark:
-                        ForegroundColor = Colors.White;
-                        break;
-                    default:
-                        ForegroundColor = Colors.White;
-                        break;
-                }
+                    ApplicationTheme.Light => Colors.Black,
+                    ApplicationTheme.Dark => Colors.White,
+                    _ => Colors.White,
+                };
                 PresentationTitleBar.ButtonForegroundColor = ForegroundColor;
                 #endregion
 
@@ -63,7 +56,7 @@ namespace AnEoT.Uwp.Helpers
             NavigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibilityToBoolean(CurrentFrame.CanGoBack);
             BackButtonVisibilityChangedEvent?.Invoke(new BackButtonVisibilityChangedEventArgs(NavigationManager.AppViewBackButtonVisibility));
 
-            AppViewBackButtonVisibility AppViewBackButtonVisibilityToBoolean(bool canGoBack)
+            static AppViewBackButtonVisibility AppViewBackButtonVisibilityToBoolean(bool canGoBack)
             {
                 if (canGoBack)
                 {
