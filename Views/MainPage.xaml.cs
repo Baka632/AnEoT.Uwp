@@ -1,30 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.ApplicationModel.Core;
+using Windows.System.Profile;
+using Windows.UI.Core;
 
-// https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
+namespace AnEoT.Uwp.Views;
 
-namespace AnEoT.Uwp.Views
+/// <summary>
+/// 可用于自身或导航至 Frame 内部的空白页。
+/// </summary>
+public sealed partial class MainPage : Page
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public MainPageViewModel ViewModel { get; }
+    private bool IsTitleBarTextBlockForwardBegun = false;
+    private bool IsFirstRun = true;
+
+    public MainPage()
     {
-        public MainPage()
+        this.InitializeComponent();
+
+        ViewModel = new MainPageViewModel(ContentFrame);
+
+        if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
         {
-            this.InitializeComponent();
+            TitleBarTextBlock.Visibility = Visibility.Collapsed;
         }
+        else
+        {
+            TitleBarHelper.BackButtonVisibilityChangedEvent += OnBackButtonVisibilityChanged;
+            TitleBarHelper.TitleBarVisibilityChangedEvent += OnTitleBarVisibilityChanged;
+        }
+    }
+
+    private void OnTitleBarVisibilityChanged(CoreApplicationViewTitleBar bar)
+    {
+        if (bar.IsVisible)
+        {
+            StartTitleBarAnimation(Visibility.Visible);
+        }
+        else
+        {
+            StartTitleBarAnimation(Visibility.Collapsed);
+        }
+    }
+
+    private void OnBackButtonVisibilityChanged(BackButtonVisibilityChangedEventArgs args)
+    {
+        StartTitleTextBlockAnimation(args.BackButtonVisibility);
+    }
+
+    private void StartTitleTextBlockAnimation(AppViewBackButtonVisibility buttonVisibility)
+    {
+        switch (buttonVisibility)
+        {
+            case AppViewBackButtonVisibility.Disabled:
+            case AppViewBackButtonVisibility.Visible:
+                if (IsTitleBarTextBlockForwardBegun)
+                {
+                    goto default;
+                }
+                TitleBarTextBlockForward.Begin();
+                IsTitleBarTextBlockForwardBegun = true;
+                break;
+            case AppViewBackButtonVisibility.Collapsed:
+                TitleBarTextBlockBack.Begin();
+                IsTitleBarTextBlockForwardBegun = false;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void StartTitleBarAnimation(Visibility visibility)
+    {
+        if (IsFirstRun)
+        {
+            IsFirstRun = false;
+            TitleBar.Visibility = visibility;
+            return;
+        }
+
+        switch (visibility)
+        {
+            case Visibility.Visible:
+                TitleBarShow.Begin();
+                break;
+            case Visibility.Collapsed:
+            default:
+                break;
+        }
+        TitleBar.Visibility = visibility;
     }
 }

@@ -2,13 +2,80 @@
     x:Class="AnEoT.Uwp.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AnEoT.Uwp.Views"
+    xmlns:app="using:AnEoT.Uwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:AnEoT.Uwp.Helpers"
+    xmlns:local="using:AnEoT.Uwp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--#region TitleBarStoryboard-->
+        <Storyboard x:Name="TitleBarTextBlockForward">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="TitleBarTextBlock" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                <SplineDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="45">
+                    <SplineDoubleKeyFrame.KeySpline>
+                        <KeySpline ControlPoint1="0,1" ControlPoint2="0,1" />
+                    </SplineDoubleKeyFrame.KeySpline>
+                </SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="TitleBarTextBlockBack">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="TitleBarTextBlock" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                <SplineDoubleKeyFrame KeyTime="0:0:0" Value="45" />
+                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
+                    <SplineDoubleKeyFrame.KeySpline>
+                        <KeySpline ControlPoint1="0,1" ControlPoint2="1,1" />
+                    </SplineDoubleKeyFrame.KeySpline>
+                </SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <!--#endregion-->
+        <Storyboard x:Name="TitleBarShow">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="TitleBar" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)">
+                <SplineDoubleKeyFrame KeyTime="0:0:0" Value="-10" />
+                <SplineDoubleKeyFrame KeyTime="0:0:5" Value="0">
+                    <SplineDoubleKeyFrame.KeySpline>
+                        <KeySpline ControlPoint1="0,1" ControlPoint2="0,1" />
+                    </SplineDoubleKeyFrame.KeySpline>
+                </SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
+        <Grid
+            x:Name="TitleBar"
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="11,0,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top">
+            <Grid.RenderTransform>
+                <TranslateTransform />
+            </Grid.RenderTransform>
+
+            <TextBlock
+                x:Name="TitleBarTextBlock"
+                Margin="0,8,0,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{x:Bind app:App.AppDisplayName}">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform />
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+
+        <Frame x:Name="ContentFrame" Grid.Row="2" />
     </Grid>
 </Page>
