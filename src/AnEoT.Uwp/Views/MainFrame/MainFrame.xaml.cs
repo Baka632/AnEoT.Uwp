@@ -1,9 +1,6 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-using Windows.Data.Xml.Dom;
-using Windows.UI.Core;
-using Windows.UI.Notifications;
-using Windows.UI.ViewManagement;
+using AnEoT.Uwp.ViewModels.MainFrame;
 
 namespace AnEoT.Uwp.Views.MainFrame
 {
