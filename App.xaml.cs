@@ -3,6 +3,7 @@ using AnEoT.Uwp.Views;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.System.Profile;
 
 namespace AnEoT.Uwp;
@@ -12,6 +13,8 @@ namespace AnEoT.Uwp;
 /// </summary>
 sealed partial class App : Application
 {
+    public static StorageFolder AssetsFolder { get; private set; }
+
     /// <summary>
     /// 初始化单实例应用程序对象。这是执行的创作代码的第一行，
     /// 已执行，逻辑上等同于 main() 或 WinMain()。
@@ -32,7 +35,7 @@ sealed partial class App : Application
     /// 将在启动应用程序以打开特定文件等情况下使用。
     /// </summary>
     /// <param name="e">启动请求和过程的详细信息</param>
-    protected override void OnLaunched(LaunchActivatedEventArgs e)
+    protected override async void OnLaunched(LaunchActivatedEventArgs e)
     {
         // 不要在窗口已包含内容时重复应用程序初始化，只需确保窗口处于活动状态
         if (Window.Current.Content is not Frame rootFrame)
@@ -69,6 +72,8 @@ sealed partial class App : Application
             ControlsResourcesVersion = isMobile ? ControlsResourcesVersion.Version1 : ControlsResourcesVersion.Version2
         };
         Resources.MergedDictionaries.Add(muxcStyle);
+
+        AssetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
     }
 
     /// <summary>

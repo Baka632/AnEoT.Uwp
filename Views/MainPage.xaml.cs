@@ -28,6 +28,8 @@ public sealed partial class MainPage : Page
             TitleBarHelper.BackButtonVisibilityChangedEvent += OnBackButtonVisibilityChanged;
             TitleBarHelper.TitleBarVisibilityChangedEvent += OnTitleBarVisibilityChanged;
         }
+
+        _ = AcrylicHelper.TrySetAcrylicBrush(this);
     }
 
     private void OnTitleBarVisibilityChanged(CoreApplicationViewTitleBar bar)

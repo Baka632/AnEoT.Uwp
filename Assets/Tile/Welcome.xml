@@ -1,0 +1,9 @@
+<tile>
+  <visual displayName="">
+    <binding template="TileWide" branding="name">
+      <image src="ms-appx:///Assets/Images/Welcome.jpg" placement="background"/>
+      <text hint-wrap="true" hint-style="subtitle">卷首</text>
+      <text hint-wrap="true">欢迎阅读《回归线》</text>
+    </binding>
+  </visual>
+</tile>

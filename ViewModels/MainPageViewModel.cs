@@ -1,6 +1,6 @@
 ﻿namespace AnEoT.Uwp.ViewModels;
 
-public class MainPageViewModel : NotificationObject
+public sealed class MainPageViewModel : NotificationObject
 {
     public TitleBarHelper TitleBarHelper { get; }
 
