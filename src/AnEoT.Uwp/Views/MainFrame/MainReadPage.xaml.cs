@@ -12,16 +12,9 @@ namespace AnEoT.Uwp.Views.MainFrame;
 /// </summary>
 public sealed partial class MainReadPage : Page
 {
-    private readonly UISettings uiSettings = new();
-
     public MainReadPage()
     {
         this.InitializeComponent();
-
-        uiSettings.ColorValuesChanged += async (sender, obj) =>
-        {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, SetupTile);
-        };
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -33,10 +26,10 @@ public sealed partial class MainReadPage : Page
 
     private async void SetupTile()
     {
-        WelcomeTile.VisualElements.BackgroundColor = uiSettings.GetColorValue(UIColorType.Accent);
-        XmlDocument content = new();
-        content.LoadXml(await TileHelper.GetTileXml("Welcome.xml"));
+        WelcomeTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Welcome.xml")));
 
-        WelcomeTile.CreateTileUpdater().Update(new TileNotification(content));
+        FavoriteTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
+        VolumeListTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
+        HistoryTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
     }
 }

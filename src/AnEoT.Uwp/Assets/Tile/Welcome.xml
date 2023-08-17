@@ -1,5 +1,5 @@
 <tile>
-  <visual displayName="">
+  <visual displayName="欢迎">
     <binding template="TileWide" branding="name">
       <image src="ms-appx:///Assets/Images/Welcome.jpg" placement="background"/>
       <text hint-wrap="true" hint-style="subtitle">卷首</text>

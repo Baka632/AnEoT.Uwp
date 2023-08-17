@@ -686,7 +686,7 @@ namespace NotificationsVisualizerLibrary
         public string DisplayName
         {
             get { return GetValue(DisplayNameProperty) as string; }
-            set { SetValue(DisplayNameProperty, value); }
+            set { SetValue(DisplayNameProperty, value); UpdateDisplayName(); }
         }
 
         private void UpdateDisplayName()

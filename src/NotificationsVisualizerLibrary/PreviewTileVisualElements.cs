@@ -6,19 +6,29 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 
 namespace NotificationsVisualizerLibrary
 {
     public sealed class PreviewTileVisualElements : INotifyPropertyChanged
     {
-        private Color _backgroundColor = Colors.Blue;
+        //Added
+        public PreviewTileVisualElements()
+        {
+            UISettings uiSettings = new UISettings();
+            _backgroundColor = uiSettings.GetColorValue(UIColorType.Accent);
+        }
+
+        private Color _backgroundColor;
         public Color BackgroundColor
         {
             get { return _backgroundColor; }
             set { SetProperty(ref _backgroundColor, value); }
         }
 
-        private bool _showNameOnSquare150x150Logo = false;
+        //Modified (false => true)
+        private bool _showNameOnSquare150x150Logo = true;
         public bool ShowNameOnSquare150x150Logo
         {
             get { return _showNameOnSquare150x150Logo; }

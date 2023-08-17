@@ -19,15 +19,15 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Center"
             Opacity="0.3"
-            Source="https://aneot.terrach.net/hero/1.webp"
+            Source="https://aneot.terrach.net/hero/3.webp"
             Stretch="UniformToFill" />
 
         <StackPanel Grid.Row="0">
             <controls:AnEoTLogo
-                Fill="{ThemeResource SystemControlBackgroundBaseHighBrush}"
                 x:Name="AnEoTLogo"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Top" />
+                VerticalAlignment="Top"
+                Fill="{ThemeResource SystemControlBackgroundBaseHighBrush}" />
 
             <StackPanel
                 Margin="11,10,11,10"
