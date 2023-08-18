@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
+global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices.WindowsRuntime;
 global using Windows.Foundation;
 global using Windows.Foundation.Collections;
@@ -16,3 +17,4 @@ global using AnEoT.Uwp.Helpers;
 global using AnEoT.Uwp.ViewModels;
 global using AnEoT.Uwp.Commands;
 global using AnEoT.Uwp.Views;
+global using AnEoT.Uwp.Models;

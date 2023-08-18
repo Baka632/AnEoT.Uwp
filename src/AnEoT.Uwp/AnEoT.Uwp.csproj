@@ -123,17 +123,29 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Contracts\IArticleProvider.cs" />
+    <Compile Include="Contracts\IVolumeProvider.cs" />
     <Compile Include="Controls\AnEoTLogo.xaml.cs">
       <DependentUpon>AnEoTLogo.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="Helpers\AcrylicHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
+    <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="Helpers\ReswHelper.cs" />
     <Compile Include="Helpers\TileHelper.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="Helpers\XamlHelper.cs" />
+    <Compile Include="Helpers\YamlHelper.cs" />
+    <Compile Include="Models\ArticleDetail.cs" />
+    <Compile Include="Models\ArticleInfo.cs" />
+    <Compile Include="Models\IndexRange\Index.cs" />
+    <Compile Include="Models\IndexRange\Range.cs" />
+    <Compile Include="Models\Markdown\MarkdownArticleInfo.cs" />
+    <Compile Include="Models\VolumeDetail.cs" />
+    <Compile Include="Models\VolumeInfo.cs" />
+    <Compile Include="Services\FileVolumeProvider.cs" />
     <Compile Include="ViewModels\MainFrame\MainFrameViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
@@ -157,6 +169,74 @@
     <Content Include="Assets\Images\rss.png" />
     <Content Include="Assets\Images\TCALogo.png" />
     <Content Include="Assets\Images\Welcome.jpg" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic1.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic2.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic3.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic4.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic5.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic6.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic7.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic8.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\comic\comic9.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\cover.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\1083文章配图三个人的舞（北棠）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\cover.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\LOFTER%40左刀行（潮石镇1）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\LOFTER%40左刀行（潮石镇2）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\战螂文章配图_石棉（permafrost）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\文章配图（失败作番茄汁）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\文章配图（宇宙渡鸦薯条颂歌）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\日暮%28湫楸鳅秋池%29.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\独立插_园丁（香港的痛苦王八）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\独立插_嵯峨（瓜皮羊二）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\独立插_诞生（FF江）.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\illustration\远牙_独立插_堀柳困困.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\answer.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_1.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_2.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_3.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_4.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_5.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\q4_6.webp" />
+    <Content Include="Assets\Test\posts\2023-06\res\ope_sec\topic.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\comic\comic1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\cover.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\2226（我也素尊滴无语了）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\宁生_文章配图（大青）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\宇航兔兔（今羽岁羽、）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\文章配图伊内丝（星期几）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\明月，取铳_文章配图（深海鱿鱼酱）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\杜宾戴花环_雨天_文章配图（阿黛）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\林中的复仇者_文章配图2_weibo%40夕檽.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\林中的复仇者_文章配图_weibo%40夕檽.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\独立插_星（WYDBZ）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\独立插（G冷机）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\独立插（Hakuya_owl）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\illustration\蒙在鼓里黎博利，具体名字我忘了，独立插（深海鱿鱼酱）.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\answer.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q10_1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q10_2.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q1_1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q1_2.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q1_3.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q1_4.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q2_1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q2_2.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q2_3.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q2_4.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q3_1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q3_2.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q3_3.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q3_4.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_1.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_2.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_3.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_4.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_5.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_6.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_7.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_8.webp" />
+    <Content Include="Assets\Test\posts\2023-07\res\ope_sec\topic.webp" />
     <Content Include="Assets\Tile\RssTile.xml" />
     <Content Include="Assets\Tile\Welcome.xml" />
     <Content Include="Assets\Tile\Working.xml" />
@@ -192,6 +272,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Markdig">
+      <Version>0.18.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
@@ -201,10 +284,39 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.3</Version>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.TypeConverter">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="YamlDotNet">
+      <Version>11.2.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Models\" />
+    <Content Include="Assets\Test\posts\2023-06\article1.md" />
+    <Content Include="Assets\Test\posts\2023-06\article2.md" />
+    <Content Include="Assets\Test\posts\2023-06\article3.md" />
+    <Content Include="Assets\Test\posts\2023-06\article4.md" />
+    <Content Include="Assets\Test\posts\2023-06\article5.md" />
+    <Content Include="Assets\Test\posts\2023-06\article6.md" />
+    <Content Include="Assets\Test\posts\2023-06\comic1.md" />
+    <Content Include="Assets\Test\posts\2023-06\interview.md" />
+    <Content Include="Assets\Test\posts\2023-06\intro.md" />
+    <Content Include="Assets\Test\posts\2023-06\ope_sec.md" />
+    <Content Include="Assets\Test\posts\2023-06\paintings.md" />
+    <Content Include="Assets\Test\posts\2023-06\README.md" />
+    <Content Include="Assets\Test\posts\2023-07\article1.md" />
+    <Content Include="Assets\Test\posts\2023-07\article2.md" />
+    <Content Include="Assets\Test\posts\2023-07\article3.md" />
+    <Content Include="Assets\Test\posts\2023-07\article4.md" />
+    <Content Include="Assets\Test\posts\2023-07\article5.md" />
+    <Content Include="Assets\Test\posts\2023-07\comic1.md" />
+    <Content Include="Assets\Test\posts\2023-07\intro.md" />
+    <Content Include="Assets\Test\posts\2023-07\ope_sec.md" />
+    <Content Include="Assets\Test\posts\2023-07\paintings.md" />
+    <Content Include="Assets\Test\posts\2023-07\README.md" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\en-US\Resources.resw" />
