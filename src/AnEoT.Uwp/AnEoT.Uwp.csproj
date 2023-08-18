@@ -154,8 +154,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\rss.png" />
     <Content Include="Assets\Images\TCALogo.png" />
     <Content Include="Assets\Images\Welcome.jpg" />
+    <Content Include="Assets\Tile\RssTile.xml" />
     <Content Include="Assets\Tile\Welcome.xml" />
     <Content Include="Assets\Tile\Working.xml" />
     <Content Include="Properties\Default.rd.xml" />

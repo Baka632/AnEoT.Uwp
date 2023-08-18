@@ -1015,5 +1015,4 @@
 
     <!-- Used for buttons in non-VOIP toasts -->
     <Style x:Key="DefaultButtonStyle" TargetType="Button"/>
-
 </ResourceDictionary>

@@ -1,0 +1,20 @@
+﻿<tile>
+    <visual>
+        <binding template="TileSmall" hint-textStacking="center">
+			<image src="ms-appx:///Assets/Images/rss.png" placement="peek"/>
+			<text hint-align="center">订阅</text>
+        </binding>
+        <binding template="TileMedium" hint-textStacking="center">
+            <image src="ms-appx:///Assets/Images/rss.png" placement="peek" hint-align="center"/>
+            <text hint-align="center">订阅《回归线》</text>
+        </binding>
+        <binding template="TileWide" hint-textStacking="center">
+            <image src="ms-appx:///Assets/Images/rss.png" placement="peek"/>
+            <text hint-style="subtitle" hint-align="center">订阅《回归线》</text>
+        </binding>
+        <binding template="TileLarge" hint-textStacking="center">
+            <image src="ms-appx:///Assets/Images/rss.png" placement="peek"/>
+            <text hint-style="subtitle" hint-align="center">订阅《回归线》</text>
+        </binding>
+    </visual>
+</tile>

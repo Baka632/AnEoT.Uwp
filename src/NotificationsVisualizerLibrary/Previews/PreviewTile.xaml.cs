@@ -236,6 +236,9 @@ namespace NotificationsVisualizerLibrary
             set { SetValue(IsAnimationEnabledProperty, value); }
         }
 
+        //Added
+        public event TypedEventHandler<object, RoutedEventArgs> Click;
+
         private Model.Enums.Template[] GetValidTemplateValues()
         {
             switch (TileSize)
@@ -635,20 +638,34 @@ namespace NotificationsVisualizerLibrary
                 RotationX = -90
             };
 
-            // Make the height increase
-            a = new DoubleAnimation()
+            DoubleAnimationUsingKeyFrames newTileProjectionAnimation = new DoubleAnimationUsingKeyFrames()
             {
-                Duration = halfTime,
                 BeginTime = halfTime,
-                To = 0,
-                EasingFunction = new ExponentialEase() { EasingMode = EasingMode.EaseOut }
+                AutoReverse = false
             };
-            Storyboard.SetTarget(a, newNotification.Projection);
-            Storyboard.SetTargetProperty(a, "RotationX");
-            s.Children.Add(a);
 
+            SplineDoubleKeyFrame frame1 = new SplineDoubleKeyFrame()
+            {
+                KeyTime = halfTime,
+                Value = 20,
+                KeySpline = new KeySpline()
+                {
+                    ControlPoint1 = new Point(0, 1),
+                    ControlPoint2 = new Point(0, 1)
+                },
+            };
+            SplineDoubleKeyFrame frame2 = new SplineDoubleKeyFrame()
+            {
+                KeyTime = duration,
+                Value = 0,
+            };
 
+            newTileProjectionAnimation.KeyFrames.Add(frame1);
+            newTileProjectionAnimation.KeyFrames.Add(frame2);
 
+            Storyboard.SetTarget(newTileProjectionAnimation, newNotification.Projection);
+            Storyboard.SetTargetProperty(newTileProjectionAnimation, "RotationX");
+            s.Children.Add(newTileProjectionAnimation);
             return s;
         }
 
@@ -658,9 +675,10 @@ namespace NotificationsVisualizerLibrary
 
             DoubleAnimation animateNewElement = new DoubleAnimation()
             {
-                Duration = TimeSpan.FromSeconds(1),
+                Duration = TimeSpan.FromSeconds(0.9),
                 From = TilePixelSize.Height,
-                To = 0
+                To = 0,
+                EasingFunction = new ExponentialEase() { EasingMode = EasingMode.EaseInOut }
             };
 
             alreadySeenNotification.RenderTransform = new TranslateTransform()
@@ -741,6 +759,17 @@ namespace NotificationsVisualizerLibrary
 
             // This might have affected branding height, so notification needs to re-display to adjust for the available size
             Reshow();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //Added
+        private void TileClick(object sender, RoutedEventArgs e)
+        {
+            Click?.Invoke(this, e);
         }
     }
 }

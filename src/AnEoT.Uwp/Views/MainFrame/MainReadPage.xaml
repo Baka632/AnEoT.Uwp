@@ -2,13 +2,14 @@
     x:Class="AnEoT.Uwp.Views.MainFrame.MainReadPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:AnEoT.Uwp.Views.MainFrame"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:visualizer="using:NotificationsVisualizerLibrary"
     mc:Ignorable="d">
 
-    <ScrollViewer>
+    <ScrollViewer KeyDown="ScrollViewer_KeyDown">
         <Viewbox
             MinHeight="180"
             MaxHeight="300"
@@ -23,12 +24,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="FirstTileGroup" Margin="0,0,4,0">
                     <visualizer:PreviewTile
                         x:Name="WelcomeTile"
                         Margin="0,0,0,4"
+                        Click="OnWelcomeTileClicked"
                         TileSize="Wide" />
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <visualizer:PreviewTile
@@ -50,6 +53,23 @@
                     Grid.Column="1"
                     DisplayName="期刊列表"
                     TileSize="Large" />
+
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Margin="4,0,0,0">
+                    <visualizer:PreviewTile
+                        x:Name="LastestVolumeTile"
+                        DisplayName="最新一期"
+                        TileSize="Wide" />
+                    <visualizer:PreviewTile
+                        Click="OnRssTileClicked"
+                        x:Name="RSSTile"
+                        Margin="0,4,0,0"
+                        DisplayName="订阅"
+                        TileSize="Small"
+                        ToolTipService.ToolTip="订阅《回归线》" />
+                </StackPanel>
             </Grid>
         </Viewbox>
     </ScrollViewer>
