@@ -96,7 +96,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
                         date = new DateTimeOffset();
                     }
 
-                    ArticleDetail articleDetail = new(result.Title, result.Author, result.Description, date, markdown,
+                    ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", result.Description ?? string.Empty, date, markdown,
                                                       result.Category, result.Tag);
                     articles.Add(articleDetail);
                 }
