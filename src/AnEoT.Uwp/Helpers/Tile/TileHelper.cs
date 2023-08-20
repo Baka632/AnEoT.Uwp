@@ -3,7 +3,7 @@ using Windows.ApplicationModel;
 using Windows.Data.Xml.Dom;
 using Windows.Storage;
 
-namespace AnEoT.Uwp.Helpers;
+namespace AnEoT.Uwp.Helpers.Tile;
 
 /// <summary>
 /// 为磁贴相关操作提供帮助的类

@@ -14,6 +14,7 @@ global using Windows.UI.Xaml.Input;
 global using Windows.UI.Xaml.Media;
 global using Windows.UI.Xaml.Navigation;
 global using AnEoT.Uwp.Helpers;
+global using AnEoT.Uwp.Helpers.Tile;
 global using AnEoT.Uwp.ViewModels;
 global using AnEoT.Uwp.Commands;
 global using AnEoT.Uwp.Views;

@@ -1,11 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AnEoT.Uwp.Services;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.ApplicationModel;
-using Windows.Storage;
-using Windows.UI;
-using Windows.UI.Notifications;
-using Windows.UI.Xaml.Markup;
+using AnEoT.Uwp.ViewModels.MainFrame;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -16,95 +10,29 @@ namespace AnEoT.Uwp.Views.MainFrame;
 /// </summary>
 public sealed partial class MainReadPage : Page
 {
+    public MainReadPageViewModel ViewModel { get; } = new();
+
     public MainReadPage()
     {
         this.InitializeComponent();
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        SetupTile();
+        await SetupTile();
     }
 
-    private async void SetupTile()
+    private async Task SetupTile()
     {
-        WelcomeTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Welcome.xml")));
-        RSSTile.VisualElements.BackgroundColor = (Color)XamlBindingHelper.ConvertValue(typeof(Color), "#fb9f0b");
-        RSSTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("RssTile.xml")));
+        await ViewModel.CreateDefaultTileAsync(FavoriteTile);
+        await ViewModel.CreateDefaultTileAsync(VolumeListTile);
+        await ViewModel.CreateDefaultTileAsync(HistoryTile);
 
-        FavoriteTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
-        VolumeListTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
-        HistoryTile.CreateTileUpdater().Update(new TileNotification(await TileHelper.GetTileXmlDocument("Working.xml")));
-        await CreateLatestVolumeTile();
-    }
-
-    private async Task CreateLatestVolumeTile()
-    {
-        StorageFolder assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
-        StorageFolder testFolder = await assetsFolder.GetFolderAsync("Test");
-        StorageFolder postsFolder = await testFolder.GetFolderAsync("posts");
-
-        FileVolumeProvider provider = new(postsFolder.Path);
-
-        VolumeInfo info = await provider.GetLatestVolumeInfoAsync();
-
-        string[] strs = info.Name.Split(new char[] { '：', ':' }, StringSplitOptions.RemoveEmptyEntries);
-
-        TileContent tileContent = new()
-        {
-            Visual = new TileVisual()
-            {
-                DisplayName = "最新一期",
-                TileWide = new TileBinding()
-                {
-                    Content = new TileBindingContentAdaptive()
-                    {
-                        BackgroundImage = new TileBackgroundImage()
-                        {
-                            Source = "https://aneot.terrach.net/hero/3.webp",
-                            HintOverlay = 50
-                        }
-                    }
-                }
-            }
-        };
-
-        TileBindingContentAdaptive content = (TileBindingContentAdaptive)tileContent.Visual.TileWide.Content;
-
-        if (strs.Length > 1)
-        {
-            AdaptiveText title = new()
-            {
-                Text = strs[0],
-                HintStyle = AdaptiveTextStyle.Base,
-                HintWrap = true
-            };
-
-            AdaptiveText theme = new()
-            {
-                Text = strs[1],
-                HintStyle = AdaptiveTextStyle.Base,
-                HintWrap = true
-            };
-
-            content.Children.Add(title);
-            content.Children.Add(theme);
-        }
-        else
-        {
-            AdaptiveText title = new()
-            {
-                Text = strs[0],
-                HintStyle = AdaptiveTextStyle.Base,
-                HintWrap = true
-            };
-            content.Children.Add(title);
-        }
-
-        TileNotification tileNotif = new(tileContent.GetXml());
-        LastestVolumeTile.CreateTileUpdater().Update(tileNotif);
+        await ViewModel.CreateWelcomeTileAsync(WelcomeTile);
+        await ViewModel.CreateRssTileAsync(RSSTile);
+        await ViewModel.CreateLatestVolumeTileAsync(LastestVolumeTile);
     }
 
     private async void OnWelcomeTileClicked(object sender, RoutedEventArgs args)
@@ -113,11 +41,11 @@ public sealed partial class MainReadPage : Page
         await Windows.System.Launcher.LaunchUriAsync(uri);
     }
 
-    private void ScrollViewer_KeyDown(object sender, KeyRoutedEventArgs e)
+    private async void ScrollViewer_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         if (e.Key == Windows.System.VirtualKey.R)
         {
-            SetupTile();
+            await SetupTile();
         }
     }
 

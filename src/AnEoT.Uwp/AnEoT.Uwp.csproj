@@ -141,7 +141,9 @@
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="Helpers\ReswHelper.cs" />
-    <Compile Include="Helpers\TileHelper.cs" />
+    <Compile Include="Helpers\Tile\TileBindingExtensions.cs" />
+    <Compile Include="Helpers\Tile\TileBuilder.cs" />
+    <Compile Include="Helpers\Tile\TileHelper.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="Helpers\XamlHelper.cs" />
     <Compile Include="Helpers\YamlHelper.cs" />
@@ -150,10 +152,12 @@
     <Compile Include="Models\IndexRange\Index.cs" />
     <Compile Include="Models\IndexRange\Range.cs" />
     <Compile Include="Models\Markdown\MarkdownArticleInfo.cs" />
+    <Compile Include="Models\Tile\TileBindingType.cs" />
     <Compile Include="Models\VolumeDetail.cs" />
     <Compile Include="Models\VolumeInfo.cs" />
     <Compile Include="Services\FileVolumeProvider.cs" />
     <Compile Include="ViewModels\MainFrame\MainFrameViewModel.cs" />
+    <Compile Include="ViewModels\MainFrame\MainReadPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
     <Compile Include="Views\MainFrame\MainFrame.xaml.cs">
