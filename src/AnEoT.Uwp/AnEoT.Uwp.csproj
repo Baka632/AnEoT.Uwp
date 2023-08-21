@@ -152,7 +152,7 @@
     <Compile Include="Models\IndexRange\Index.cs" />
     <Compile Include="Models\IndexRange\Range.cs" />
     <Compile Include="Models\Markdown\MarkdownArticleInfo.cs" />
-    <Compile Include="Models\Tile\TileBindingType.cs" />
+    <Compile Include="Models\Tile\TileTemplateType.cs" />
     <Compile Include="Models\VolumeDetail.cs" />
     <Compile Include="Models\VolumeInfo.cs" />
     <Compile Include="Services\FileVolumeProvider.cs" />

@@ -3,7 +3,7 @@
 /// <summary>
 /// 指示磁贴类型的枚举
 /// </summary>
-public enum TileBindingType
+public enum TileTemplateType
 {
     /// <summary>
     /// 自适应磁贴，这是最推荐的类型，支持所有磁贴大小

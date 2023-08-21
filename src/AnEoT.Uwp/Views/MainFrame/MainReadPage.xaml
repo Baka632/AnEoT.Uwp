@@ -54,6 +54,7 @@
                     TileSize="Large" />
 
                 <StackPanel
+                    x:Name="ThirdTileGroup"
                     Grid.Row="0"
                     Grid.Column="2"
                     Margin="4,0,0,0">
