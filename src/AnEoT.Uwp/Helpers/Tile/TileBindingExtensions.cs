@@ -9,7 +9,7 @@ namespace AnEoT.Uwp.Helpers.Tile;
 public static class TileBindingExtensions
 {
     /// <summary>
-    /// 设置磁贴背景图片，此图片将位于所有磁贴内容之后，并以全出血（Full bleed）方式显示
+    /// 添加磁贴背景图片，此图片将位于所有磁贴内容之后，并以全出血（Full bleed）方式显示
     /// </summary>
     /// <param name="tile">要设置背景图片的 <see cref="TileBinding"/></param>
     /// <param name="source">图片的 Uri，此 Uri 可指向应用包、应用数据或者网络。来自网络的图像大小应小于 200 KB</param>
@@ -18,7 +18,7 @@ public static class TileBindingExtensions
     /// <param name="addImageQuery">指示 Windows 是否应当向图像添加查询字符串的值，此查询字符串将限定图像的缩放、语言及高对比度设置。此功能需要 Uri 目标的支持</param>
     /// <param name="hintCrop">设置图像的裁剪类型</param>
     /// <returns>添加了背景图像的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
-    public static TileBinding SetBackgroundImage(this TileBinding tile,
+    public static TileBinding AddBackgroundImage(this TileBinding tile,
                                                                 string source, int hintOverlay = 20,
                                                                 string alternateText = "", bool? addImageQuery = null,
                                                                 TileBackgroundImageCrop hintCrop = TileBackgroundImageCrop.Default)
@@ -39,7 +39,7 @@ public static class TileBindingExtensions
     }
 
     /// <summary>
-    /// 设置磁贴“预览”图片，此图片将从磁贴顶部滑入磁贴
+    /// 添加磁贴速览图片，此图片将从磁贴顶部滑入磁贴，之后滑出磁贴以显示主要信息
     /// </summary>
     /// <param name="tile">要设置“预览”图片的 <see cref="TileBinding"/></param>
     /// <param name="source">图片的 Uri，此 Uri 可指向应用包、应用数据或者网络。来自网络的图像大小应小于 200 KB</param>
@@ -47,8 +47,8 @@ public static class TileBindingExtensions
     /// <param name="alternateText">设置图像的替代文本，以供辅助功能使用</param>
     /// <param name="addImageQuery">指示 Windows 是否应当向图像添加查询字符串的值，此查询字符串将限定图像的缩放、语言及高对比度设置。此功能需要 Uri 目标的支持</param>
     /// <param name="hintCrop">设置图像的裁剪类型</param>
-    /// <returns>添加了“预览”图像的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
-    public static TileBinding SetPeekImage(this TileBinding tile,
+    /// <returns>添加了速览图像的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
+    public static TileBinding AddPeekImage(this TileBinding tile,
                                                                 string source, int hintOverlay = 20,
                                                                 string alternateText = "", bool? addImageQuery = null,
                                                                 TilePeekImageCrop hintCrop = TilePeekImageCrop.Default)

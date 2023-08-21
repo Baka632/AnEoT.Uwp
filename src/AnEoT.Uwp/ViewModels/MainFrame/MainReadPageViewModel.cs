@@ -33,42 +33,79 @@ public sealed class MainReadPageViewModel : NotificationObject
     {
         VolumeInfo info = await provider.GetLatestVolumeInfoAsync();
 
-        string[] strs = info.Name.Split(new char[] { '：', ':' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] splitedTitle = info.Name.Split(new char[] { '：', ':' }, StringSplitOptions.RemoveEmptyEntries);
 
         AdaptiveTileBuilder builder = new();
         builder.ConfigureDisplayName("最新一期");
         builder.TileWide
-            .SetBackgroundImage("https://aneot.terrach.net/hero/3.webp", 50)
-            .AddAdaptiveText(strs[0], true, AdaptiveTextStyle.Base);
+            .AddBackgroundImage("https://aneot.terrach.net/hero/3.webp", 50)
+            .AddAdaptiveText(splitedTitle[0], true, AdaptiveTextStyle.Base);
 
-        if (strs.Length > 1)
+        if (splitedTitle.Length > 1)
         {
-            builder.TileWide.AddAdaptiveText(strs[1], true, AdaptiveTextStyle.Base);
+            //主题刊
+            //我们在这里将主题名称单列一行
+            builder.TileWide.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
         }
 
-        TileContent tileContent = builder.Build();
-
-        UpdateTile(tileContent.GetXml(), lastestVolumeTile);
+        UpdateTile(builder.BuildXml(), lastestVolumeTile);
     }
 
-    public async Task CreateDefaultTileAsync(PreviewTile tile)
+    public void CreateDefaultTileAsync(PreviewTile tile)
     {
-        XmlDocument content = await TileHelper.GetTileXmlDocument("Working.xml");
-        UpdateTile(content, tile);
+        AdaptiveTileBuilder builder = new();
+        builder.TileSmall
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddAdaptiveText("🤔", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
+        builder.TileMedium
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddAdaptiveText("🤔正在构思...", hintStyle: AdaptiveTextStyle.Caption, hintAlign: AdaptiveTextAlign.Center);
+        builder.TileWide
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddAdaptiveText("🤔正在构思...", hintStyle: AdaptiveTextStyle.Title, hintAlign: AdaptiveTextAlign.Center);
+        builder.TileLarge
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddAdaptiveText("🤔", hintStyle: AdaptiveTextStyle.Header, hintAlign: AdaptiveTextAlign.Center)
+            .AddAdaptiveText("正在构思...", hintStyle: AdaptiveTextStyle.Subheader, hintAlign: AdaptiveTextAlign.Center);
+
+        UpdateTile(builder.BuildXml(), tile);
     }
 
-    public async Task CreateRssTileAsync(PreviewTile rssTile)
+    public void CreateRssTileAsync(PreviewTile rssTile)
     {
         rssTile.VisualElements.BackgroundColor = (Color)XamlBindingHelper.ConvertValue(typeof(Color), "#fb9f0b");
 
-        XmlDocument content = await TileHelper.GetTileXmlDocument("RssTile.xml");
-        UpdateTile(content, rssTile);
+        AdaptiveTileBuilder builder = new();
+        builder.TileSmall
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+            .AddAdaptiveText("订阅", hintAlign: AdaptiveTextAlign.Center);
+        builder.TileMedium
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+            .AddAdaptiveText("订阅《回归线》", hintAlign: AdaptiveTextAlign.Center);
+        builder.TileWide
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+            .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
+        builder.TileLarge
+            .ConfigureTextStacking(TileTextStacking.Center)
+            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+            .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
+
+        UpdateTile(builder.BuildXml(), rssTile);
     }
 
-    public async Task CreateWelcomeTileAsync(PreviewTile welcomeTile)
+    public void CreateWelcomeTileAsync(PreviewTile welcomeTile)
     {
-        XmlDocument content = await TileHelper.GetTileXmlDocument("Welcome.xml");
-        UpdateTile(content, welcomeTile);
+        AdaptiveTileBuilder builder = new();
+        builder.ConfigureDisplayName("欢迎");
+        builder.TileWide
+            .AddBackgroundImage("ms-appx:///Assets/Images/Welcome.jpg")
+            .AddAdaptiveText("卷首", true, AdaptiveTextStyle.Subtitle)
+            .AddAdaptiveText("欢迎阅读《回归线》", true);
+
+        UpdateTile(builder.BuildXml(), welcomeTile);
     }
 
     private void UpdateTile(XmlDocument xmlDocument, PreviewTile tile)

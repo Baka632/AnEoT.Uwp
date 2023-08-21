@@ -248,9 +248,6 @@
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_7.webp" />
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_8.webp" />
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\topic.webp" />
-    <Content Include="Assets\Tile\RssTile.xml" />
-    <Content Include="Assets\Tile\Welcome.xml" />
-    <Content Include="Assets\Tile\Working.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

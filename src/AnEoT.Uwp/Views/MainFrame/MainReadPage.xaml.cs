@@ -26,12 +26,12 @@ public sealed partial class MainReadPage : Page
 
     private async Task SetupTile()
     {
-        await ViewModel.CreateDefaultTileAsync(FavoriteTile);
-        await ViewModel.CreateDefaultTileAsync(VolumeListTile);
-        await ViewModel.CreateDefaultTileAsync(HistoryTile);
+        ViewModel.CreateDefaultTileAsync(FavoriteTile);
+        ViewModel.CreateDefaultTileAsync(VolumeListTile);
+        ViewModel.CreateDefaultTileAsync(HistoryTile);
 
-        await ViewModel.CreateWelcomeTileAsync(WelcomeTile);
-        await ViewModel.CreateRssTileAsync(RSSTile);
+        ViewModel.CreateWelcomeTileAsync(WelcomeTile);
+        ViewModel.CreateRssTileAsync(RSSTile);
         await ViewModel.CreateLatestVolumeTileAsync(LastestVolumeTile);
     }
 

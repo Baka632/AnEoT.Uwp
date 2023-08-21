@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace AnEoT.Uwp.Helpers.Tile;
 
@@ -60,5 +61,14 @@ public sealed class AdaptiveTileBuilder
     public TileContent Build()
     {
         return tile;
+    }
+
+    /// <summary>
+    /// 生成表示磁贴的 <see cref="XmlDocument"/>
+    /// </summary>
+    /// <returns>表示磁贴内容的 <see cref="XmlDocument"/></returns>
+    public XmlDocument BuildXml()
+    {
+        return tile.GetXml();
     }
 }
