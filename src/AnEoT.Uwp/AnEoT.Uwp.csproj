@@ -12,7 +12,7 @@
     <AssemblyName>AnEoT.Uwp</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -160,11 +160,17 @@
     <Compile Include="ViewModels\MainFrame\MainReadPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
+    <Compile Include="Views\MainFrame\MainDownloadPage.xaml.cs">
+      <DependentUpon>MainDownloadPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainFrame\MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainFrame\MainReadPage.xaml.cs">
       <DependentUpon>MainReadPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainFrame\MainSettingsPage.xaml.cs">
+      <DependentUpon>MainSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -248,6 +254,35 @@
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_7.webp" />
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\q6_8.webp" />
     <Content Include="Assets\Test\posts\2023-07\res\ope_sec\topic.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\comic\comic1.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\comic\comic2.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\comic\comic3.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\cover.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\尤里卡%28yooooz%29.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\尤里卡（平方²）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\文配图（Yumero-梦路）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\文配图（歆鸢）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\文配图（铅鸽）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\星极（liliyFox）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\独立插黑键白垩（硬質廢料）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\独立插（枫雀･ω･｀）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\独立插（汤罐浣熊）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\狼羊（煜灼灼）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\illustration\纯艾（oY柚柚Yo）.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\answer.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q2_1.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q2_2.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q2_3.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q2_4.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q6_1.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q6_2.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q6_3.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q6_4.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_1.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_2.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_3.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_4.webp" />
+    <Content Include="Assets\Test\posts\2023-08\res\ope_sec\topic.webp" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -266,11 +301,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MainFrame\MainDownloadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainFrame\MainFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainFrame\MainReadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainFrame\MainSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,6 +380,18 @@
       <Project>{220f3a47-bec1-40ef-be2d-98a8345ab983}</Project>
       <Name>NotificationsVisualizerLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Test\posts\2023-08\article1.md" />
+    <Content Include="Assets\Test\posts\2023-08\article2.md" />
+    <Content Include="Assets\Test\posts\2023-08\article3.md" />
+    <Content Include="Assets\Test\posts\2023-08\article4.md" />
+    <Content Include="Assets\Test\posts\2023-08\comic1.md" />
+    <Content Include="Assets\Test\posts\2023-08\interview.md" />
+    <Content Include="Assets\Test\posts\2023-08\intro.md" />
+    <Content Include="Assets\Test\posts\2023-08\ope_sec.md" />
+    <Content Include="Assets\Test\posts\2023-08\paintings.md" />
+    <Content Include="Assets\Test\posts\2023-08\README.md" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

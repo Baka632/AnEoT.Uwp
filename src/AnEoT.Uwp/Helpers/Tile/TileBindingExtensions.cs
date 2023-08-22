@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Toolkit.Uwp.Notifications;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace AnEoT.Uwp.Helpers.Tile;
 

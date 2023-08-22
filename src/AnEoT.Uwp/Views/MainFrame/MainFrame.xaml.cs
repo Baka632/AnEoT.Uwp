@@ -16,6 +16,8 @@ namespace AnEoT.Uwp.Views.MainFrame
             this.InitializeComponent();
 
             MainReadPageFrame.Navigate(typeof(MainReadPage));
+            MainSettingPageFrame.Navigate(typeof(MainSettingsPage));
+            MainDownloadPageFrame.Navigate(typeof(MainDownloadPage));
         }
     }
 }
