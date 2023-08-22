@@ -30,6 +30,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
         CurrentPath = path;
     }
 
+    /// <inheritdoc/>
     public async Task<VolumeDetail> GetVolumeAsync(string volume)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
@@ -37,6 +38,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
         return await GetVolumeDetailFromStorageFolderAsync(volumeFolder);
     }
 
+    /// <inheritdoc/>
     public async Task<VolumeInfo> GetVolumeInfoAsync(string volume)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
@@ -44,6 +46,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
         return await GetVolumeInfoFromStorageFolderAsync(volumeFolder);
     }
 
+    /// <inheritdoc/>
     public async Task<VolumeDetail> GetLatestVolumeAsync()
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
@@ -57,6 +60,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
         return await GetVolumeDetailFromStorageFolderAsync(volumeFolder);
     }
 
+    /// <inheritdoc/>
     public async Task<VolumeInfo> GetLatestVolumeInfoAsync()
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
@@ -75,7 +79,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
         IEnumerable<StorageFile> fileList = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
                     .Where(file => file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
 
-        string volumeName = null;
+        string volumeTitle = null;
         List<ArticleDetail> articles = new(fileList.Count());
 
         foreach (StorageFile file in fileList)
@@ -86,11 +90,10 @@ public sealed class FileVolumeProvider : IVolumeProvider
             {
                 if (file.Name == "README.md")
                 {
-                    volumeName = result.Title;
+                    volumeTitle = result.Title;
                 }
                 else
                 {
-
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {
                         date = new DateTimeOffset();
@@ -103,31 +106,57 @@ public sealed class FileVolumeProvider : IVolumeProvider
             }
         }
 
-        if (volumeName is not null && articles.Any())
+        if (volumeTitle is not null && articles.Any())
         {
-            VolumeDetail detail = new(volumeName, articles);
+            VolumeDetail detail = new(volumeTitle, articles);
             return detail;
         }
         else
         {
-            throw new ArgumentException("使用指定的参数，无法获取指定期刊信息");
+            throw new ArgumentException("使用指定的参数，无法获取指定期刊的信息");
         }
     }
 
     private static async Task<VolumeInfo> GetVolumeInfoFromStorageFolderAsync(StorageFolder volumeFolder)
     {
-        StorageFile file = await volumeFolder.GetFileAsync("README.md");
-        string markdown = await FileIO.ReadTextAsync(file);
+        IEnumerable<StorageFile> fileList = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
+                    .Where(file => file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
 
-        if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
+        string volumeTitle = null;
+        List<ArticleInfo> articles = new(fileList.Count());
+
+        foreach (StorageFile file in fileList)
         {
-            VolumeInfo volumeInfo = new(result.Title);
+            string markdown = await FileIO.ReadTextAsync(file);
 
+            if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
+            {
+                if (file.Name == "README.md")
+                {
+                    volumeTitle = result.Title;
+                }
+                else
+                {
+                    if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
+                    {
+                        date = new DateTimeOffset();
+                    }
+
+                    ArticleInfo articleDetail = new(result.Title, result.Author ?? "Another end of Terra", result.Description ?? string.Empty, date,
+                                                      result.Category, result.Tag);
+                    articles.Add(articleDetail);
+                }
+            }
+        }
+
+        if (volumeTitle is not null && articles.Any())
+        {
+            VolumeInfo volumeInfo = new(volumeTitle, articles);
             return volumeInfo;
         }
         else
         {
-            throw new ArgumentException("使用指定参数，找到的 README.md 文件无效");
+            throw new ArgumentException("使用指定的参数，无法获取指定期刊的信息");
         }
     }
 }

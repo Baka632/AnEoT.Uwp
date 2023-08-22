@@ -46,11 +46,11 @@
                 </StackPanel>
 
                 <visualizer:PreviewTile
-                    x:Name="VolumeListTile"
+                    x:Name="LastestVolumeTile"
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    DisplayName="期刊列表"
+                    DisplayName="最新一期"
                     TileSize="Large" />
 
                 <StackPanel
@@ -59,8 +59,8 @@
                     Grid.Column="2"
                     Margin="4,0,0,0">
                     <visualizer:PreviewTile
-                        x:Name="LastestVolumeTile"
-                        DisplayName="最新一期"
+                        x:Name="VolumeListTile"
+                        DisplayName="期刊列表"
                         TileSize="Wide" />
                     <visualizer:PreviewTile
                         x:Name="RSSTile"

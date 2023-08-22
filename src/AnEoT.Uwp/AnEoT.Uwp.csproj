@@ -23,7 +23,7 @@
     <PackageCertificateKeyFile />
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
@@ -141,7 +141,7 @@
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="Helpers\ReswHelper.cs" />
-    <Compile Include="Helpers\Tile\TileBindingExtensions.cs" />
+    <Compile Include="Helpers\Tile\TileCreationExtensions.cs" />
     <Compile Include="Helpers\Tile\TileBuilder.cs" />
     <Compile Include="Helpers\Tile\TileHelper.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />

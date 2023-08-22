@@ -37,7 +37,7 @@ public sealed class MainReadPageViewModel : NotificationObject
 
         AdaptiveTileBuilder builder = new();
         builder.ConfigureDisplayName("最新一期");
-        builder.TileWide
+        builder.TileLarge
             .AddBackgroundImage("https://aneot.terrach.net/hero/3.webp", 50)
             .AddAdaptiveText(splitedTitle[0], true, AdaptiveTextStyle.Base);
 
@@ -45,7 +45,7 @@ public sealed class MainReadPageViewModel : NotificationObject
         {
             //主题刊
             //我们在这里将主题名称单列一行
-            builder.TileWide.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
+            builder.TileLarge.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
         }
 
         UpdateTile(builder.BuildXml(), lastestVolumeTile);
@@ -62,7 +62,7 @@ public sealed class MainReadPageViewModel : NotificationObject
             .AddAdaptiveText("🤔正在构思...", hintStyle: AdaptiveTextStyle.Caption, hintAlign: AdaptiveTextAlign.Center);
         builder.TileWide
             .ConfigureTextStacking(TileTextStacking.Center)
-            .AddAdaptiveText("🤔正在构思...", hintStyle: AdaptiveTextStyle.Title, hintAlign: AdaptiveTextAlign.Center);
+            .AddAdaptiveText("🤔正在构思...", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
         builder.TileLarge
             .ConfigureTextStacking(TileTextStacking.Center)
             .AddAdaptiveText("🤔", hintStyle: AdaptiveTextStyle.Header, hintAlign: AdaptiveTextAlign.Center)

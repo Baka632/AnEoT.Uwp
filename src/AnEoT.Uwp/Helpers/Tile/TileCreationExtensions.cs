@@ -3,9 +3,9 @@
 namespace AnEoT.Uwp.Helpers.Tile;
 
 /// <summary>
-/// 为 <see cref="TileBinding"/> 提供扩展方法的类
+/// 为磁贴创建提供扩展方法的类
 /// </summary>
-public static class TileBindingExtensions
+public static class TileCreationExtensions
 {
     /// <summary>
     /// 添加磁贴背景图片，此图片将位于所有磁贴内容之后，并以全出血（Full bleed）方式显示
@@ -68,18 +68,6 @@ public static class TileBindingExtensions
     }
 
     /// <summary>
-    /// 设置磁贴的显示名称。注意：这里的设置将覆盖全局设置
-    /// </summary>
-    /// <param name="tile">要设置显示名称的 <see cref="TileBinding"/></param>
-    /// <param name="displayName">磁贴的显示名称</param>
-    /// <returns>设置了显示名称的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
-    public static TileBinding SetDisplayName(this TileBinding tile, string displayName)
-    {
-        tile.DisplayName = displayName;
-        return tile;
-    }
-
-    /// <summary>
     /// 向磁贴中添加文本
     /// </summary>
     /// <param name="tile">要添加文本的 <see cref="TileBinding"/></param>
@@ -87,11 +75,11 @@ public static class TileBindingExtensions
     /// <param name="hintWrap">指示是否启用文本换行的值</param>
     /// <param name="hintStyle">文本样式</param>
     /// <param name="hintAlign">用以配置文本水平布局的 <see cref="AdaptiveTextAlign"/></param>
-    /// <param name="hintMaxLines">允许在磁贴中显示的最大行数，若设为 <see langword="null"/>，即为无限制</param>
-    /// <param name="hintMinLines">在磁贴中显示的最少行数，若设为 <see langword="null"/>，即为无限制</param>
-    /// <param name="language">配置磁贴文本的语言，应传入如“zh-CN”的 BCP-47 标记</param>
-    /// <param name="bindings">包含磁贴文本的数据绑定的字典</param>
-    /// <returns>添加了磁贴文本的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
+    /// <param name="hintMaxLines">允许显示的最大行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="hintMinLines">文本显示的最少行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="language">配置文本的语言，应传入如“zh-CN”的 BCP-47 标记</param>
+    /// <param name="bindings">包含文本数据绑定的字典</param>
+    /// <returns>添加了文本的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
     public static TileBinding AddAdaptiveText(this TileBinding tile, string text,
                                                              bool hintWrap = false,
                                                              AdaptiveTextStyle hintStyle = AdaptiveTextStyle.Default,
@@ -101,7 +89,55 @@ public static class TileBindingExtensions
                                                              IDictionary<AdaptiveTextBindableProperty, string> bindings = null)
     {
         TileBindingContentAdaptive content = ConvertITileBindingContentAsAdaptive(tile);
+        AdaptiveText adaptiveText = CreateAdaptiveText(text, hintWrap, hintStyle, hintAlign, hintMaxLines, hintMinLines, language, bindings);
 
+        content.Children.Add(adaptiveText);
+        return tile;
+    }
+
+    /// <summary>
+    /// 向子组中添加文本
+    /// </summary>
+    /// <param name="subgroup">要添加文本的 <see cref="AdaptiveSubgroup"/></param>
+    /// <param name="text">文本字符串</param>
+    /// <param name="hintWrap">指示是否启用文本换行的值</param>
+    /// <param name="hintStyle">文本样式</param>
+    /// <param name="hintAlign">用以配置文本水平布局的 <see cref="AdaptiveTextAlign"/></param>
+    /// <param name="hintMaxLines">允许显示的最大行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="hintMinLines">文本显示的最少行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="language">配置文本的语言，应传入如“zh-CN”的 BCP-47 标记</param>
+    /// <param name="bindings">包含文本数据绑定的字典</param>
+    /// <returns>添加了文本的 <see cref="AdaptiveSubgroup"/>，其可用于进一步的配置</returns>
+    public static AdaptiveSubgroup AddAdaptiveText(this AdaptiveSubgroup subgroup, string text,
+                                                             bool hintWrap = false,
+                                                             AdaptiveTextStyle hintStyle = AdaptiveTextStyle.Default,
+                                                             AdaptiveTextAlign hintAlign = AdaptiveTextAlign.Default,
+                                                             int? hintMaxLines = null, int? hintMinLines = null,
+                                                             string language = null,
+                                                             IDictionary<AdaptiveTextBindableProperty, string> bindings = null)
+    {
+        AdaptiveText adaptiveText = CreateAdaptiveText(
+            text, hintWrap, hintStyle, hintAlign, hintMaxLines, hintMinLines, language, bindings);
+
+        subgroup.Children.Add(adaptiveText);
+        return subgroup;
+    }
+
+    /// <summary>
+    /// 新建一个 <see cref="AdaptiveText"/>
+    /// </summary>
+    /// <param name="subgroup">要添加文本的 <see cref="AdaptiveSubgroup"/></param>
+    /// <param name="text">文本字符串</param>
+    /// <param name="hintWrap">指示是否启用文本换行的值</param>
+    /// <param name="hintStyle">文本样式</param>
+    /// <param name="hintAlign">用以配置文本水平布局的 <see cref="AdaptiveTextAlign"/></param>
+    /// <param name="hintMaxLines">允许显示的最大行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="hintMinLines">文本显示的最少行数，若设为 <see langword="null"/>，即为无限制</param>
+    /// <param name="language">配置文本的语言，应传入如“zh-CN”的 BCP-47 标记</param>
+    /// <param name="bindings">包含文本数据绑定的字典</param>
+    /// <returns>新建的 <see cref="AdaptiveText"/></returns>
+    private static AdaptiveText CreateAdaptiveText(string text, bool hintWrap, AdaptiveTextStyle hintStyle, AdaptiveTextAlign hintAlign, int? hintMaxLines, int? hintMinLines, string language, IDictionary<AdaptiveTextBindableProperty, string> bindings)
+    {
         AdaptiveText adaptiveText = new()
         {
             Text = text,
@@ -121,7 +157,52 @@ public static class TileBindingExtensions
             }
         }
 
-        content.Children.Add(adaptiveText);
+        return adaptiveText;
+    }
+
+    /// <summary>
+    /// 向磁贴添加组。组可以让其中的内容一起显示
+    /// </summary>
+    /// <param name="tile">要添加组的 <see cref="TileBinding"/></param>
+    /// <returns>已被添加到磁贴的 <see cref="AdaptiveGroup"/>，其用于进一步添加组内的内容</returns>
+    public static AdaptiveGroup AddAdaptiveGroup(this TileBinding tile)
+    {
+        TileBindingContentAdaptive content = ConvertITileBindingContentAsAdaptive(tile);
+        AdaptiveGroup group = new();
+        content.Children.Add(group);
+
+        return group;
+    }
+
+    /// <summary>
+    /// 向组中添加子组。子组负责容纳要在一起显示的具体内容
+    /// </summary>
+    /// <param name="group">要添加子组的 <see cref="AdaptiveGroup"/></param>
+    /// <param name="hintTextStacking">用以配置文本垂直布局的 <see cref="AdaptiveSubgroupTextStacking"/></param>
+    /// <param name="hintWeight">子组的宽度</param>
+    /// <returns>已被添加到组的 <see cref="AdaptiveSubgroup"/>，其用于进一步添加内容</returns>
+    public static AdaptiveSubgroup AddAdaptiveSubgroup(this AdaptiveGroup group, AdaptiveSubgroupTextStacking hintTextStacking = AdaptiveSubgroupTextStacking.Default, int? hintWeight = null)
+    {
+        AdaptiveSubgroup subgroup = new()
+        {
+            HintTextStacking = hintTextStacking,
+            HintWeight = hintWeight
+        };
+
+        group.Children.Add(subgroup);
+
+        return subgroup;
+    }
+
+    /// <summary>
+    /// 设置磁贴的显示名称。注意：这里的设置将覆盖全局设置
+    /// </summary>
+    /// <param name="tile">要设置显示名称的 <see cref="TileBinding"/></param>
+    /// <param name="displayName">磁贴的显示名称</param>
+    /// <returns>设置了显示名称的 <see cref="TileBinding"/>，其可用于进一步的配置</returns>
+    public static TileBinding SetDisplayName(this TileBinding tile, string displayName)
+    {
+        tile.DisplayName = displayName;
         return tile;
     }
 
