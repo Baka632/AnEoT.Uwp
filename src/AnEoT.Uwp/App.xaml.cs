@@ -1,9 +1,6 @@
-﻿using AnEoT.Uwp.Helpers;
-using AnEoT.Uwp.Views;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Storage;
 using Windows.System.Profile;
 
 namespace AnEoT.Uwp;
