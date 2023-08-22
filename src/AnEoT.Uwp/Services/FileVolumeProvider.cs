@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using AnEoT.Uwp.Contracts;
-using Markdig;
 using Windows.Storage;
 using Windows.Storage.Search;
 
@@ -99,7 +98,8 @@ public sealed class FileVolumeProvider : IVolumeProvider
                         date = new DateTimeOffset();
                     }
 
-                    ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", result.Description ?? string.Empty, date, markdown,
+                    string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
+                    ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date, markdown,
                                                       result.Category, result.Tag);
                     articles.Add(articleDetail);
                 }
@@ -142,9 +142,10 @@ public sealed class FileVolumeProvider : IVolumeProvider
                         date = new DateTimeOffset();
                     }
 
-                    ArticleInfo articleDetail = new(result.Title, result.Author ?? "Another end of Terra", result.Description ?? string.Empty, date,
+                    string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
+                    ArticleInfo articleInfo = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date,
                                                       result.Category, result.Tag);
-                    articles.Add(articleDetail);
+                    articles.Add(articleInfo);
                 }
             }
         }

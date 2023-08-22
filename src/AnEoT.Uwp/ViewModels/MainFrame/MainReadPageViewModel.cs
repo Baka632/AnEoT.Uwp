@@ -48,6 +48,31 @@ public sealed class MainReadPageViewModel : NotificationObject
             builder.TileLarge.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
         }
 
+        //用作分隔符
+        builder.TileLarge.AddAdaptiveText(string.Empty);
+
+        foreach (ArticleInfo item in info.Articles)
+        {
+            AdaptiveSubgroup targetGroup = builder.TileLarge.AddAdaptiveGroup().AddAdaptiveSubgroup();
+            targetGroup.AddAdaptiveText(item.Title, true);
+
+            if (string.IsNullOrWhiteSpace(item.Description) != true)
+            {
+                int start = item.Description.IndexOf('{');
+                int end = item.Description.IndexOf('}');
+
+                if (start != -1 && end != -1 && start <= end)
+                {
+                    int count = item.Description[start..end].Count();
+                    string description = item.Description.Remove(start, count + 1);
+
+                    targetGroup.AddAdaptiveText(description, true, AdaptiveTextStyle.CaptionSubtle);
+                }
+            }
+
+            builder.TileLarge.AddAdaptiveText(string.Empty);
+        }
+
         UpdateTile(builder.BuildXml(), lastestVolumeTile);
     }
 
