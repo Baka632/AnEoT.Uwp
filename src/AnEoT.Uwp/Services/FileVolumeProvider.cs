@@ -1,5 +1,6 @@
 ﻿using AnEoT.Uwp.Contracts;
 using AnEoT.Uwp.Helpers.Comparer;
+using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
 

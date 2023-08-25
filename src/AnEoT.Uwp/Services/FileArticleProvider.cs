@@ -1,4 +1,5 @@
 ﻿using AnEoT.Uwp.Contracts;
+using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
 
@@ -57,7 +58,7 @@ public readonly struct FileArticleProvider : IArticleProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (file.Name == title)
+                if (result.Title == title)
                 {
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {
@@ -86,7 +87,7 @@ public readonly struct FileArticleProvider : IArticleProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (file.Name == title)
+                if (result.Title == title)
                 {
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {

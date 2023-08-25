@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AnEoT.Uwp.Contracts;
+using AnEoT.Uwp.Models.Navigation;
 using AnEoT.Uwp.Services;
 using Markdig;
 using Markdig.Syntax;
@@ -24,6 +25,9 @@ public sealed class MainReadPageViewModel : NotificationObject
     private readonly IVolumeProvider volumeProvider;
     private readonly IArticleProvider articleProvider;
 
+    public DelegateCommand GoToRssSiteCommand { get; }
+    public DelegateCommand GoToWelcomeArticleCommand { get; }
+
     public MainReadPageViewModel()
     {
         assetsFolder = Package.Current.InstalledLocation.GetFolderAsync("Assets").AsTask().Result;
@@ -32,6 +36,16 @@ public sealed class MainReadPageViewModel : NotificationObject
 
         volumeProvider = new FileVolumeProvider(postsFolder.Path);
         articleProvider = new FileArticleProvider(postsFolder.Path);
+
+        GoToRssSiteCommand = new DelegateCommand(async obj =>
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new("https://aneot.terrach.net/subscription.html"));
+        });
+
+        GoToWelcomeArticleCommand = new DelegateCommand(obj =>
+        {
+            NavigationHelper.Navigate(typeof(ReadPage), new ArticleNavigationInfo("2022-06", "卷首语"));
+        });
     }
 
     public async Task<IEnumerable<XmlDocument>> GetLatestVolumeTilesAsync()

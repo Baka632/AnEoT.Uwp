@@ -1,4 +1,4 @@
-namespace AnEoT.Uwp.Models;
+namespace AnEoT.Uwp.Models.Markdown;
 
 /// <summary>
 /// 表示文章信息的结构

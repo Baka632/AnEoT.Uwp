@@ -183,6 +183,7 @@
         Width="{Binding TilePixelSize.Width, ElementName=previewTile}"
         Height="{Binding TilePixelSize.Height, ElementName=previewTile}"
         Click="TileClick"
+        Command="{x:Bind Command, Mode=OneWay}"
         Style="{StaticResource DefaultTileButtonStyle}">
         <Grid
             x:Name="LayoutRoot"

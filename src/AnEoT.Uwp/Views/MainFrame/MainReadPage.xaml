@@ -30,7 +30,7 @@
                     <visualizer:PreviewTile
                         x:Name="WelcomeTile"
                         Margin="0,0,0,4"
-                        Click="OnWelcomeTileClicked"
+                        Command="{x:Bind ViewModel.GoToWelcomeArticleCommand}"
                         TileSize="Wide" />
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <visualizer:PreviewTile
@@ -66,7 +66,7 @@
                     <visualizer:PreviewTile
                         x:Name="RSSTile"
                         Margin="0,4,0,0"
-                        Click="OnRssTileClicked"
+                        Command="{x:Bind ViewModel.GoToRssSiteCommand}"
                         DisplayName="订阅"
                         TileSize="Wide"
                         ToolTipService.ToolTip="订阅《回归线》" />

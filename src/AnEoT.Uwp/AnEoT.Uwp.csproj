@@ -151,6 +151,7 @@
     <Compile Include="Models\ArticleDetail.cs" />
     <Compile Include="Models\ArticleInfo.cs" />
     <Compile Include="Models\Markdown\MarkdownArticleInfo.cs" />
+    <Compile Include="Models\Navigation\ArticleNavigationInfo.cs" />
     <Compile Include="Models\Tile\TileTemplateType.cs" />
     <Compile Include="Models\VolumeDetail.cs" />
     <Compile Include="Models\VolumeInfo.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="ViewModels\MainFrame\MainReadPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
+    <Compile Include="ViewModels\ReadPageViewModel.cs" />
     <Compile Include="Views\MainFrame\MainDownloadPage.xaml.cs">
       <DependentUpon>MainDownloadPage.xaml</DependentUpon>
     </Compile>
@@ -176,6 +178,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\ReadPage.xaml.cs">
+      <DependentUpon>ReadPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -188,6 +193,9 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Css\index.css" />
+    <Content Include="Assets\Css\palette.css" />
+    <Content Include="Assets\Css\site.css" />
     <Content Include="Assets\Images\rss.png" />
     <Content Include="Assets\Images\TCALogo.png" />
     <Content Include="Assets\Images\Welcome.jpg" />
@@ -232,6 +240,26 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Test\posts\2022-06\res\Angelina.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\00cover.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\01.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\02.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\03.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\04.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\05.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\06.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\comic\07.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\cover.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\mudrock.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\other\mountain-g799cce72e_1920.jpg" />
+    <Content Include="Assets\Test\posts\2022-06\res\other\sailing-ship-g89a29db5d_1920.jpg" />
+    <Content Include="Assets\Test\posts\2022-06\res\圆舞1.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\圆舞2.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\短歌.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\艾丽妮.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\蒂升华.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\铃兰.webp" />
+    <Content Include="Assets\Test\posts\2022-06\res\鲨.webp" />
     <Content Include="Assets\Test\posts\2023-06\res\comic\comic1.webp" />
     <Content Include="Assets\Test\posts\2023-06\res\comic\comic2.webp" />
     <Content Include="Assets\Test\posts\2023-06\res\comic\comic3.webp" />
@@ -370,6 +398,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ReadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IndexRange">
@@ -442,6 +474,19 @@
     <Content Include="Assets\Test\posts\2023-08\paintings.md" />
     <Content Include="Assets\Test\posts\2023-08\README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Test\posts\2022-06\article1.md" />
+    <Content Include="Assets\Test\posts\2022-06\article2.md" />
+    <Content Include="Assets\Test\posts\2022-06\article3.md" />
+    <Content Include="Assets\Test\posts\2022-06\article4.md" />
+    <Content Include="Assets\Test\posts\2022-06\article5.md" />
+    <Content Include="Assets\Test\posts\2022-06\article6.md" />
+    <Content Include="Assets\Test\posts\2022-06\comic1.md" />
+    <Content Include="Assets\Test\posts\2022-06\intro.md" />
+    <Content Include="Assets\Test\posts\2022-06\paintings.md" />
+    <Content Include="Assets\Test\posts\2022-06\README.md" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

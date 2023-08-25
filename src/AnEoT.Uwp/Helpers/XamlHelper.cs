@@ -41,4 +41,9 @@ public static class XamlHelper
             null => defaultVisibilityForNull
         };
     }
+
+    public static string DateTimeOffsetToFormatedString(DateTimeOffset value)
+    {
+        return value.ToString("yyyy年M月d日");
+    }
 }
