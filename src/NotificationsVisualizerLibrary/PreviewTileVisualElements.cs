@@ -17,7 +17,9 @@ namespace NotificationsVisualizerLibrary
         public PreviewTileVisualElements()
         {
             UISettings uiSettings = new UISettings();
-            _backgroundColor = uiSettings.GetColorValue(UIColorType.Accent);
+            Color color = uiSettings.GetColorValue(UIColorType.Accent);
+            color.A = 100;
+            _backgroundColor = color;
         }
 
         private Color _backgroundColor;

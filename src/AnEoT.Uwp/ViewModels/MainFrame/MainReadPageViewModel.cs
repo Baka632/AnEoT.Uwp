@@ -108,7 +108,7 @@ public sealed class MainReadPageViewModel : NotificationObject
 
     public void CreateRssTileAsync(PreviewTile rssTile)
     {
-        rssTile.VisualElements.BackgroundColor = (Color)XamlBindingHelper.ConvertValue(typeof(Color), "#fb9f0b");
+        rssTile.VisualElements.BackgroundColor = (Color)XamlBindingHelper.ConvertValue(typeof(Color), "#64fb9f0b");
         TileContent content = new()
         {
             Visual = new TileVisual()
