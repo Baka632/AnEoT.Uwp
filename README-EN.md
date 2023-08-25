@@ -13,7 +13,10 @@ A fanmade literary journal based on mobile game *Arknights*, redesigned for Wind
     - .NET 7 SDK
 - Open ```AnEoT.Vintage.sln``` file with Visual Studio and run this project
 
-Enjoy reading~
+Enjoy~
+
+## System requirements
+The lowest supported version is Windows 10 1703（15063）
 
 ## About Us
 
