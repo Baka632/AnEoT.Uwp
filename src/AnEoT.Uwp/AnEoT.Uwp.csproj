@@ -154,6 +154,7 @@
     <Compile Include="Models\Tile\TileTemplateType.cs" />
     <Compile Include="Models\VolumeDetail.cs" />
     <Compile Include="Models\VolumeInfo.cs" />
+    <Compile Include="Services\FileArticleProvider.cs" />
     <Compile Include="Services\FileVolumeProvider.cs" />
     <Compile Include="ViewModels\MainFrame\MainFrameViewModel.cs" />
     <Compile Include="ViewModels\MainFrame\MainReadPageViewModel.cs" />

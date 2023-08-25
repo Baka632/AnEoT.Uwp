@@ -11,6 +11,9 @@ namespace AnEoT.Uwp.Helpers;
 /// </summary>
 public static class MarkdownHelper
 {
+    /// <summary>
+    /// 经过配置的 Markdown 管道，可解析大多数 Markdown 语法
+    /// </summary>
     public static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder()
             .UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions.Default)
             .UseAdvancedExtensions()

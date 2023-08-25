@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AnEoT.Uwp.Contracts;
 using AnEoT.Uwp.Services;
+using Markdig;
+using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 using Microsoft.Toolkit.Uwp.Notifications;
 using NotificationsVisualizerLibrary;
 using Windows.ApplicationModel;
@@ -18,7 +21,8 @@ namespace AnEoT.Uwp.ViewModels.MainFrame;
 public sealed class MainReadPageViewModel : NotificationObject
 {
     private readonly StorageFolder assetsFolder;
-    private readonly IVolumeProvider provider;
+    private readonly IVolumeProvider volumeProvider;
+    private readonly IArticleProvider articleProvider;
 
     public MainReadPageViewModel()
     {
@@ -26,12 +30,13 @@ public sealed class MainReadPageViewModel : NotificationObject
         StorageFolder testFolder = assetsFolder.GetFolderAsync("Test").AsTask().Result;
         StorageFolder postsFolder = testFolder.GetFolderAsync("posts").AsTask().Result;
 
-        provider = new FileVolumeProvider(postsFolder.Path);
+        volumeProvider = new FileVolumeProvider(postsFolder.Path);
+        articleProvider = new FileArticleProvider(postsFolder.Path);
     }
 
     public async Task<IEnumerable<XmlDocument>> GetLatestVolumeTilesAsync()
     {
-        VolumeInfo info = await provider.GetLatestVolumeInfoAsync();
+        VolumeDetail info = await volumeProvider.GetLatestVolumeAsync();
         List<XmlDocument> xmlDocuments = new(info.Articles.Count());
 
         {
@@ -52,9 +57,20 @@ public sealed class MainReadPageViewModel : NotificationObject
             xmlDocuments.Add(mainTileBuilder.BuildXml());
         }
 
-        foreach (ArticleInfo article in info.Articles)
+        foreach (ArticleDetail article in info.Articles)
         {
+            MarkdownDocument markdownDoc = Markdown.Parse(article.MarkdownContent, MarkdownHelper.Pipeline);
+            LinkInline img = markdownDoc.Descendants<LinkInline>().FirstOrDefault(link => link.IsImage);
+
             AdaptiveTileBuilder tileBuilder = new();
+
+            // HACK: 考虑使用其他方式获得图片Uri，而不是写死
+            if (img is not null)
+            {
+                string imgUri = $"ms-appx:///Assets/Test/posts/{info.RawName}/{img.Url}";
+                tileBuilder.TileLarge.AddBackgroundImage(imgUri, 60);
+            }
+
             tileBuilder.ConfigureDisplayName("最新一期");
             tileBuilder.TileLarge
                 .AddAdaptiveText(article.Title, true);
@@ -93,26 +109,47 @@ public sealed class MainReadPageViewModel : NotificationObject
     public void CreateRssTileAsync(PreviewTile rssTile)
     {
         rssTile.VisualElements.BackgroundColor = (Color)XamlBindingHelper.ConvertValue(typeof(Color), "#fb9f0b");
+        TileContent content = new()
+        {
+            Visual = new TileVisual()
+            {
+                DisplayName = "订阅《回归线》",
+                TileWide = new TileBinding()
+                {
+                    Content = new TileBindingContentAdaptive()
+                    {
+                        Children =
+                        {
+                            new AdaptiveImage()
+                            {
+                                Source = "ms-appx:///Assets/Images/rss.png",
+                                HintRemoveMargin = false
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
-        AdaptiveTileBuilder builder = new();
-        builder.TileSmall
-            .ConfigureTextStacking(TileTextStacking.Center)
-            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
-            .AddAdaptiveText("订阅", hintAlign: AdaptiveTextAlign.Center);
-        builder.TileMedium
-            .ConfigureTextStacking(TileTextStacking.Center)
-            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
-            .AddAdaptiveText("订阅《回归线》", hintAlign: AdaptiveTextAlign.Center);
-        builder.TileWide
-            .ConfigureTextStacking(TileTextStacking.Center)
-            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
-            .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
-        builder.TileLarge
-            .ConfigureTextStacking(TileTextStacking.Center)
-            .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
-            .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
+        //AdaptiveTileBuilder builder = new();
+        //builder.TileSmall
+        //    .ConfigureTextStacking(TileTextStacking.Center)
+        //    .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+        //    .AddAdaptiveText("订阅", hintAlign: AdaptiveTextAlign.Center);
+        //builder.TileMedium
+        //    .ConfigureTextStacking(TileTextStacking.Center)
+        //    .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+        //    .AddAdaptiveText("订阅《回归线》", hintAlign: AdaptiveTextAlign.Center);
+        //builder.TileWide
+        //    .ConfigureTextStacking(TileTextStacking.Center)
+        //    .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+        //    .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
+        //builder.TileLarge
+        //    .ConfigureTextStacking(TileTextStacking.Center)
+        //    .AddPeekImage("ms-appx:///Assets/Images/rss.png", hintOverlay: 0)
+        //    .AddAdaptiveText("订阅《回归线》", hintStyle: AdaptiveTextStyle.Subtitle, hintAlign: AdaptiveTextAlign.Center);
 
-        UpdateTile(builder.BuildXml(), rssTile);
+        UpdateTile(content.GetXml(), rssTile);
     }
 
     public void CreateWelcomeTileAsync(PreviewTile welcomeTile)

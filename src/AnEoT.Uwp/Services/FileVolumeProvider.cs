@@ -8,7 +8,7 @@ namespace AnEoT.Uwp.Services;
 /// <summary>
 /// 基于本地文件的期刊获取器
 /// </summary>
-public sealed class FileVolumeProvider : IVolumeProvider
+public readonly struct FileVolumeProvider : IVolumeProvider
 {
     /// <summary>
     /// 当前使用的文件夹路径
@@ -110,12 +110,12 @@ public sealed class FileVolumeProvider : IVolumeProvider
 
         if (volumeTitle is not null && articles.Any())
         {
-            VolumeDetail detail = new(volumeTitle, articles);
+            VolumeDetail detail = new(volumeTitle, volumeFolder.DisplayName, articles);
             return detail;
         }
         else
         {
-            throw new ArgumentException("使用指定的参数，无法获取指定期刊的信息");
+            throw new ArgumentException("使用指定的参数，无法获取指定期刊");
         }
     }
 
@@ -156,7 +156,7 @@ public sealed class FileVolumeProvider : IVolumeProvider
 
         if (volumeTitle is not null && articles.Any())
         {
-            VolumeInfo volumeInfo = new(volumeTitle, articles);
+            VolumeInfo volumeInfo = new(volumeTitle, volumeFolder.DisplayName, articles);
             return volumeInfo;
         }
         else

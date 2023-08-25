@@ -11,7 +11,7 @@
     <ScrollViewer KeyDown="ScrollViewer_KeyDown">
         <Viewbox
             MinHeight="180"
-            MaxHeight="300"
+            MaxHeight="400"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Stretch="Uniform">
@@ -68,7 +68,7 @@
                         Margin="0,4,0,0"
                         Click="OnRssTileClicked"
                         DisplayName="订阅"
-                        TileSize="Small"
+                        TileSize="Wide"
                         ToolTipService.ToolTip="订阅《回归线》" />
                 </StackPanel>
             </Grid>
