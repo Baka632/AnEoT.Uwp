@@ -1,4 +1,6 @@
-﻿using Markdig;
+﻿using System.Text.RegularExpressions;
+using System.Text;
+using Markdig;
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
 
@@ -9,7 +11,7 @@ namespace AnEoT.Uwp.Helpers;
 /// </summary>
 public static class MarkdownHelper
 {
-    private static readonly MarkdownPipeline pipeline = new MarkdownPipelineBuilder()
+    public static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder()
             .UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions.Default)
             .UseAdvancedExtensions()
             .UseListExtras()
@@ -25,7 +27,7 @@ public static class MarkdownHelper
     /// <returns>转换得到的模型</returns>
     public static T GetFromFrontMatter<T>(string markdown)
     {
-        MarkdownDocument doc = Markdown.Parse(markdown, pipeline);
+        MarkdownDocument doc = Markdown.Parse(markdown, Pipeline);
         YamlFrontMatterBlock yamlBlock = doc.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
         if (yamlBlock is not null)
@@ -50,7 +52,7 @@ public static class MarkdownHelper
     /// <returns>指示操作是否成功的值</returns>
     public static bool TryGetFromFrontMatter<T>(string markdown, out T result)
     {
-        MarkdownDocument doc = Markdown.Parse(markdown, pipeline);
+        MarkdownDocument doc = Markdown.Parse(markdown, Pipeline);
         YamlFrontMatterBlock yamlBlock = doc.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
         if (yamlBlock is not null)
@@ -87,7 +89,7 @@ public static class MarkdownHelper
         }
 
         string quote = null;
-        MarkdownDocument doc = Markdown.Parse(markdown, pipeline);
+        MarkdownDocument doc = Markdown.Parse(markdown, Pipeline);
         YamlFrontMatterBlock yamlBlock = doc.Descendants<YamlFrontMatterBlock>().FirstOrDefault();
 
         foreach (MarkdownObject item in doc)
@@ -111,5 +113,41 @@ public static class MarkdownHelper
         }
 
         return quote ?? string.Empty;
+    }
+
+    //Modified from https://learn.microsoft.com/en-us/answers/questions/594274/convert-html-text-to-plain-text-in-c
+    /// <summary>
+    /// 将 Markdown 文本转化为纯文本
+    /// </summary>
+    /// <param name="markdown">Markdown 文本</param>
+    /// <returns>转化后的纯文本</returns>
+    public static string ToPlainText(string markdown)
+    {
+        string html = Markdown.ToHtml(markdown, Pipeline);
+
+        // Remove HEAD tag  
+        html = Regex.Replace(html, "<head.*?</head>", ""
+                            , RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        // Remove any JavaScript  
+        html = Regex.Replace(html, "<script.*?</script>", ""
+          , RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        // Replace special characters like &, <, >, " etc.  
+        StringBuilder stringBuilder = new(html);
+        // Note: There are many more special characters, these are just  
+        // most common. You can add new characters in this arrays if needed  
+        string[] OldWords = {"&nbsp;", "&amp;", "&quot;", "&lt;",
+   "&gt;", "&reg;", "&copy;", "&bull;", "&trade;","&#39;"};
+        string[] NewWords = { " ", "&", "\"", "<", ">", "Â®", "Â©", "â€¢", "â„¢", "\'" };
+        for (int i = 0; i < OldWords.Length; i++)
+        {
+            stringBuilder.Replace(OldWords[i], NewWords[i]);
+        }
+        // Check if there are line breaks (<br>) or paragraph (<p>)  
+        stringBuilder.Replace("<br>", "\n<br>");
+        stringBuilder.Replace("<br ", "\n<br ");
+        stringBuilder.Replace("<p ", "\n<p ");
+        // Finally, remove all HTML tags and return plain text  
+        return Regex.Replace(
+          stringBuilder.ToString(), "<[^>]*>", "").Trim();
     }
 }

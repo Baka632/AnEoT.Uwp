@@ -131,4 +131,14 @@ public struct MarkdownArticleInfo : IEquatable<MarkdownArticleInfo>
     {
         return !(left == right);
     }
+
+    public static implicit operator ArticleInfo(MarkdownArticleInfo info)
+    {
+        if (DateTimeOffset.TryParse(info.Date, out DateTimeOffset date) != true)
+        {
+            date = new DateTimeOffset();
+        }
+
+        return new ArticleInfo(info.Title, info.Author, info.Description, date, info.Category, info.Tag);
+    }
 }

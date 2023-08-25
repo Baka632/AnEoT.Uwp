@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AnEoT.Uwp.Contracts;
+﻿namespace AnEoT.Uwp.Contracts;
 
 /// <summary>
 /// 定义一套与获取文章信息相关的方法

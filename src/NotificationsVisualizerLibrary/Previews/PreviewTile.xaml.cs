@@ -562,6 +562,9 @@ namespace NotificationsVisualizerLibrary
         private bool _isAnimating;
         private bool _isWaitingToShow;
 
+        //Added
+        public event RoutedEventHandler NewNotificationAnimationCompleted;
+
         /// <summary>
         /// Animates the tile to show this new content
         /// </summary>
@@ -592,6 +595,9 @@ namespace NotificationsVisualizerLibrary
             s.Completed += delegate
             {
                 _isAnimating = false;
+
+                //Added
+                NewNotificationAnimationCompleted?.Invoke(this, null);
 
                 // Remove our previous
                 canvas.Children.Remove(previous);
@@ -759,11 +765,6 @@ namespace NotificationsVisualizerLibrary
 
             // This might have affected branding height, so notification needs to re-display to adjust for the available size
             Reshow();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         //Added

@@ -29,51 +29,45 @@ public sealed class MainReadPageViewModel : NotificationObject
         provider = new FileVolumeProvider(postsFolder.Path);
     }
 
-    public async Task CreateLatestVolumeTileAsync(PreviewTile lastestVolumeTile)
+    public async Task<IEnumerable<XmlDocument>> GetLatestVolumeTilesAsync()
     {
         VolumeInfo info = await provider.GetLatestVolumeInfoAsync();
+        List<XmlDocument> xmlDocuments = new(info.Articles.Count());
 
-        string[] splitedTitle = info.Name.Split(new char[] { '：', ':' }, StringSplitOptions.RemoveEmptyEntries);
-
-        AdaptiveTileBuilder builder = new();
-        builder.ConfigureDisplayName("最新一期");
-        builder.TileLarge
-            .AddBackgroundImage("https://aneot.terrach.net/hero/3.webp", 50)
-            .AddAdaptiveText(splitedTitle[0], true, AdaptiveTextStyle.Base);
-
-        if (splitedTitle.Length > 1)
         {
-            //主题刊
-            //我们在这里将主题名称单列一行
-            builder.TileLarge.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
-        }
+            string[] splitedTitle = info.Name.Split(new char[] { '：', ':' }, StringSplitOptions.RemoveEmptyEntries);
+            AdaptiveTileBuilder mainTileBuilder = new();
+            mainTileBuilder.ConfigureDisplayName("最新一期");
+            mainTileBuilder.TileLarge
+                .AddBackgroundImage("https://aneot.terrach.net/hero/3.webp", 50)
+                .AddAdaptiveText(splitedTitle[0], true, AdaptiveTextStyle.Base);
 
-        //用作分隔符
-        builder.TileLarge.AddAdaptiveText(string.Empty);
-
-        foreach (ArticleInfo item in info.Articles)
-        {
-            AdaptiveSubgroup targetGroup = builder.TileLarge.AddAdaptiveGroup().AddAdaptiveSubgroup();
-            targetGroup.AddAdaptiveText(item.Title, true);
-
-            if (string.IsNullOrWhiteSpace(item.Description) != true)
+            if (splitedTitle.Length > 1)
             {
-                int start = item.Description.IndexOf('{');
-                int end = item.Description.IndexOf('}');
-
-                if (start != -1 && end != -1 && start <= end)
-                {
-                    int count = item.Description[start..end].Count();
-                    string description = item.Description.Remove(start, count + 1);
-
-                    targetGroup.AddAdaptiveText(description, true, AdaptiveTextStyle.CaptionSubtle);
-                }
+                //主题刊
+                //我们在这里将主题名称单列一行
+                mainTileBuilder.TileLarge.AddAdaptiveText(splitedTitle[1], true, AdaptiveTextStyle.Base);
             }
 
-            builder.TileLarge.AddAdaptiveText(string.Empty);
+            xmlDocuments.Add(mainTileBuilder.BuildXml());
         }
 
-        UpdateTile(builder.BuildXml(), lastestVolumeTile);
+        foreach (ArticleInfo article in info.Articles)
+        {
+            AdaptiveTileBuilder tileBuilder = new();
+            tileBuilder.ConfigureDisplayName("最新一期");
+            tileBuilder.TileLarge
+                .AddAdaptiveText(article.Title, true);
+
+            if (string.IsNullOrWhiteSpace(article.Description) != true)
+            {
+                tileBuilder.TileLarge.AddAdaptiveText(MarkdownHelper.ToPlainText(article.Description), true, AdaptiveTextStyle.CaptionSubtle);
+            }
+
+            xmlDocuments.Add(tileBuilder.BuildXml());
+        }
+
+        return xmlDocuments;
     }
 
     public void CreateDefaultTileAsync(PreviewTile tile)
