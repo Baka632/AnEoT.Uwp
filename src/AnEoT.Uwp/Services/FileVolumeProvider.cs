@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using AnEoT.Uwp.Contracts;
+﻿using AnEoT.Uwp.Contracts;
+using AnEoT.Uwp.Helpers.Comparer;
 using Windows.Storage;
 using Windows.Storage.Search;
 
@@ -100,11 +100,13 @@ public sealed class FileVolumeProvider : IVolumeProvider
 
                     string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
                     ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date, markdown,
-                                                      result.Category, result.Tag);
+                                                      result.Category, result.Tag, result.Order, result.ShortTitle);
                     articles.Add(articleDetail);
                 }
             }
         }
+
+        articles.Sort(new ArticleDetailOrInfoComparer());
 
         if (volumeTitle is not null && articles.Any())
         {
@@ -144,11 +146,13 @@ public sealed class FileVolumeProvider : IVolumeProvider
 
                     string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
                     ArticleInfo articleInfo = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date,
-                                                      result.Category, result.Tag);
+                                                      result.Category, result.Tag, result.Order, result.ShortTitle);
                     articles.Add(articleInfo);
                 }
             }
         }
+
+        articles.Sort(new ArticleDetailOrInfoComparer());
 
         if (volumeTitle is not null && articles.Any())
         {

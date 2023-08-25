@@ -11,6 +11,11 @@ public readonly struct ArticleInfo : IEquatable<ArticleInfo>
     public string Title { get; } = string.Empty;
 
     /// <summary>
+    /// 文档短标题
+    /// </summary>
+    public string ShortTitle { get; } = string.Empty;
+
+    /// <summary>
     /// 文章作者
     /// </summary>
     public string Author { get; } = string.Empty;
@@ -36,6 +41,11 @@ public readonly struct ArticleInfo : IEquatable<ArticleInfo>
     public IEnumerable<string> Tag { get; }
 
     /// <summary>
+    /// 文档在本期期刊的顺序，可为负数
+    /// </summary>
+    public int? Order { get; }
+
+    /// <summary>
     /// 使用指定的参数构造 <see cref="ArticleInfo"/> 的新实例
     /// </summary>
     /// <param name="title">文章标题</param>
@@ -44,7 +54,9 @@ public readonly struct ArticleInfo : IEquatable<ArticleInfo>
     /// <param name="date">文章日期</param>
     /// <param name="category">文章类别</param>
     /// <param name="tag">文章标签</param>
-    public ArticleInfo(string title, string author, string description, DateTimeOffset date, IEnumerable<string> category, IEnumerable<string> tag)
+    /// <param name="order">文章顺序，可以为负数</param>
+    /// <param name="shortTitle">文章短标题</param>
+    public ArticleInfo(string title, string author, string description, DateTimeOffset date, IEnumerable<string> category, IEnumerable<string> tag, int? order = null, string shortTitle = "")
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -62,6 +74,10 @@ public readonly struct ArticleInfo : IEquatable<ArticleInfo>
         Date = date;
         Category = category;
         Tag = tag;
+
+        //可选属性
+        Order = order;
+        ShortTitle = shortTitle;
     }
 
     public override bool Equals(object obj)
@@ -83,19 +99,23 @@ public readonly struct ArticleInfo : IEquatable<ArticleInfo>
                Author == other.Author &&
                Description == other.Description &&
                Date.Equals(other.Date) &&
+               Order == other.Order &&
+               ShortTitle == other.ShortTitle &&
                isCategoryEqual &&
                isTagEqual;
     }
 
     public override int GetHashCode()
     {
-        int hashCode = -1680255907;
+        int hashCode = -649213139;
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Title);
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ShortTitle);
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Author);
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
         hashCode = hashCode * -1521134295 + Date.GetHashCode();
         hashCode = hashCode * -1521134295 + EqualityComparer<IEnumerable<string>>.Default.GetHashCode(Category);
         hashCode = hashCode * -1521134295 + EqualityComparer<IEnumerable<string>>.Default.GetHashCode(Tag);
+        hashCode = hashCode * -1521134295 + Order.GetHashCode();
         return hashCode;
     }
 

@@ -31,11 +31,11 @@ public struct MarkdownArticleInfo : IEquatable<MarkdownArticleInfo>
     /// <summary>
     /// 文章作者
     /// </summary>
-    public string Author { get; set; }
+    public string Author { get; set; } = string.Empty;
     /// <summary>
     /// 文档创建日期的字符串
     /// </summary>
-    public string Date { get; set; }
+    public string Date { get; set; } = string.Empty;
     /// <summary>
     /// 文档类别
     /// </summary>
@@ -139,6 +139,10 @@ public struct MarkdownArticleInfo : IEquatable<MarkdownArticleInfo>
             date = new DateTimeOffset();
         }
 
-        return new ArticleInfo(info.Title, info.Author, info.Description, date, info.Category, info.Tag);
+        string author = string.IsNullOrWhiteSpace(info.Author) ? "Another end of Terra" : info.Author;
+        ArticleInfo articleInfo = new(
+            info.Title, author, info.Description, date, info.Category, info.Tag, info.Order, info.ShortTitle);
+
+        return articleInfo;
     }
 }

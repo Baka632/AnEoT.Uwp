@@ -138,6 +138,7 @@
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="Helpers\AcrylicHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
+    <Compile Include="Helpers\Comparer\ArticleDetailOrInfoComparer.cs" />
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="Helpers\ReswHelper.cs" />
