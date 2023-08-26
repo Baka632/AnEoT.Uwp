@@ -1,7 +1,10 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
+using System.Net;
+using System.Text.RegularExpressions;
 using AnEoT.Uwp.Models.Navigation;
 using Markdig;
+using WebMarkupMin.Core;
 
 namespace AnEoT.Uwp.Views;
 
@@ -24,22 +27,40 @@ public sealed partial class ReadPage : Page
         if (e.Parameter is ArticleNavigationInfo navigationInfo)
         {
             await ViewModel.PreparePage(navigationInfo);
+            ContentWebView.Navigate(new Uri("ms-appx-web:///Assets/Web/Html/MarkdownPageTemplate.html"));
+        }
+    }
+
+    private async void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+    {
+        if (ViewModel.ArticleDetail.MarkdownContent is not null)
+        {
+            SolidColorBrush colorBrush = (SolidColorBrush)Resources["SystemControlForegroundBaseHighBrush"];
+            Windows.UI.Color textColor = colorBrush.Color;
 
             string content = Markdown.ToHtml(ViewModel.ArticleDetail.MarkdownContent, MarkdownHelper.Pipeline);
-            //HACK: 无效
-            string html =
-$"""
-<head>
-    <meta charset="utf-8" />
-    <link href="ms-appx-web://Assets/Css/site.css" rel="stylesheet" type="text/css" />
-    <link href="ms-appx-web://Assets/Css/index.css" rel="stylesheet" type="text/css" />
-    <link href="ms-appx-web://Assets/Css/palette.css" rel="stylesheet" type="text/css" />
-    <link href="https://unpkg.com/lxgw-wenkai-screen-webfont@1.6.0/style.css" rel="stylesheet" type="text/css" />
-</head>
-{content}
-""";
+            string html = $"<div>{content}</div>";
+            HtmlMinifier htmlMinifier = new();
+            MarkupMinificationResult result = htmlMinifier.Minify(html);
 
-            ContentWebView.NavigateToString(html);
+            try
+            {
+                await sender.InvokeScriptAsync("eval", new[]
+                {
+                    $"document.getElementById('mainContent').insertAdjacentHTML('afterbegin', '{result.MinifiedContent}')",
+                });
+
+                await sender.InvokeScriptAsync("eval", new[]
+                {
+                    $"document.getElementById('mainContent').style.color = 'rgb({textColor.R}, {textColor.G}, {textColor.B})'",
+                });
+            }
+            catch (Exception ex)
+            {
+                //脚本出错了...
+                System.Diagnostics.Debug.WriteLine("[ReadPage] Exception occured!");
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
     }
 }

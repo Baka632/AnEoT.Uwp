@@ -193,9 +193,9 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
-    <Content Include="Assets\Css\index.css" />
-    <Content Include="Assets\Css\palette.css" />
-    <Content Include="Assets\Css\site.css" />
+    <Content Include="Assets\Web\Css\index.css" />
+    <Content Include="Assets\Web\Css\palette.css" />
+    <Content Include="Assets\Web\Css\site.css" />
     <Content Include="Assets\Images\rss.png" />
     <Content Include="Assets\Images\TCALogo.png" />
     <Content Include="Assets\Images\Welcome.jpg" />
@@ -357,6 +357,8 @@
     <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_3.webp" />
     <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_4.webp" />
     <Content Include="Assets\Test\posts\2023-08\res\ope_sec\topic.webp" />
+    <Content Include="Assets\Web\Html\MarkdownPageTemplate.html" />
+    <Content Include="Assets\Web\Js\pageload.js" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -421,6 +423,9 @@
     </PackageReference>
     <PackageReference Include="System.ComponentModel.TypeConverter">
       <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="WebMarkupMin.Core">
+      <Version>2.14.0</Version>
     </PackageReference>
     <PackageReference Include="YamlDotNet">
       <Version>11.2.1</Version>
@@ -487,6 +492,12 @@
     <Content Include="Assets\Test\posts\2022-06\README.md" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Fonts\LXGWWenKaiScreen.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\LXGWWenKaiScreenR.ttf" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

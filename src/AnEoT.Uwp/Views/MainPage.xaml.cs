@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.Core;
+﻿using AnEoT.Uwp.Models.Navigation;
+using Windows.ApplicationModel.Core;
 using Windows.System.Profile;
 using Windows.UI.Core;
 
@@ -90,5 +91,15 @@ public sealed partial class MainPage : Page
                 break;
         }
         TitleBar.Visibility = visibility;
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is ArticleNavigationInfo info)
+        {
+            NavigationHelper.Navigate(typeof(ReadPage), info);
+        }
     }
 }

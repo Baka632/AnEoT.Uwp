@@ -2,6 +2,7 @@
 using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
+using YamlDotNet.Core.Tokens;
 
 namespace AnEoT.Uwp.Services;
 
@@ -33,7 +34,7 @@ public readonly struct FileArticleProvider : IArticleProvider
     public async Task<ArticleDetail> GetArticleAsync(string volume, string title)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
-        StorageFolder volumeFolder = await baseFolder.GetFolderAsync(volume);
+        StorageFolder volumeFolder = await GetVolumeFolder(volume, baseFolder);
 
         return await GetArticleDetailFromStorageFolderAsync(volumeFolder, title);
     }
@@ -42,7 +43,7 @@ public readonly struct FileArticleProvider : IArticleProvider
     public async Task<ArticleInfo> GetArticleInfoAsync(string volume, string title)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
-        StorageFolder volumeFolder = await baseFolder.GetFolderAsync(volume);
+        StorageFolder volumeFolder = await GetVolumeFolder(volume, baseFolder);
 
         return await GetArticleInfoFromStorageFolderAsync(volumeFolder, title);
     }
@@ -58,7 +59,7 @@ public readonly struct FileArticleProvider : IArticleProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (result.Title == title)
+                if (result.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
                 {
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {
@@ -87,7 +88,7 @@ public readonly struct FileArticleProvider : IArticleProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (result.Title == title)
+                if (result.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
                 {
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {
@@ -103,5 +104,16 @@ public readonly struct FileArticleProvider : IArticleProvider
         }
 
         throw new ArgumentException("使用指定的参数，无法获取指定文章的信息");
+    }
+
+    private static async Task<StorageFolder> GetVolumeFolder(string volume, StorageFolder baseFolder)
+    {
+        string volumeFolderPath = Path.Combine(baseFolder.Path, volume);
+        if (Directory.Exists(volumeFolderPath) != true)
+        {
+            throw new DirectoryNotFoundException($"路径 {volumeFolderPath} 不存在");
+        }
+
+        return await baseFolder.GetFolderAsync(volume);
     }
 }

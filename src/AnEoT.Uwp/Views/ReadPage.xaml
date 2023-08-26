@@ -16,11 +16,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <muxc:BreadcrumbBar
+        <muxc:InfoBar
+            Title="{x:Bind ViewModel.InfoBarTitle, Mode=OneWay}"
             Grid.Row="0"
+            IsOpen="{x:Bind ViewModel.InfoBarOpen, Mode=OneWay}"
+            Message="{x:Bind ViewModel.InfoBarMessage, Mode=OneWay}"
+            Severity="{x:Bind ViewModel.InfoBarSeverity, Mode=OneWay}" />
+
+        <muxc:BreadcrumbBar
+            Grid.Row="1"
             Margin="-5,0,0,0"
             VerticalAlignment="Top"
             ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}">
@@ -37,11 +45,11 @@
         </muxc:BreadcrumbBar>
 
         <TextBlock
-            Grid.Row="1"
+            Grid.Row="2"
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}" />
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style TargetType="SymbolIcon">
                     <Setter Property="Margin" Value="0,0,5,0" />
@@ -79,14 +87,15 @@
             </StackPanel>
         </StackPanel>
 
-        <Grid Grid.Row="3" Margin="-8,10,0,0">
+        <Grid Grid.Row="4" Margin="-8,0,0,0">
             <WebView
                 x:Name="ContentWebView"
                 Width="{x:Bind Width, Mode=OneWay}"
                 Height="{x:Bind Height, Mode=OneWay}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                DefaultBackgroundColor="Transparent" />
+                DefaultBackgroundColor="Transparent"
+                NavigationCompleted="OnNavigationCompleted" />
         </Grid>
     </Grid>
 </Page>

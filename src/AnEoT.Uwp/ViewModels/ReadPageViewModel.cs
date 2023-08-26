@@ -2,6 +2,7 @@
 using AnEoT.Uwp.Contracts;
 using AnEoT.Uwp.Models.Navigation;
 using AnEoT.Uwp.Services;
+using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 using Windows.Storage;
 
@@ -15,7 +16,13 @@ public sealed class ReadPageViewModel : NotificationObject
     private readonly StorageFolder assetsFolder;
     private readonly IVolumeProvider volumeProvider;
     private readonly IArticleProvider articleProvider;
+
+    #region InfoBar Props & Fields
     private ArticleDetail _ArticleDetail;
+    private bool _InfoBarOpen;
+    private string _InfoBarTitle;
+    private string _InfoBarMessage;
+    private InfoBarSeverity _InfoBarSeverity;
 
     public ArticleDetail ArticleDetail
     {
@@ -26,6 +33,48 @@ public sealed class ReadPageViewModel : NotificationObject
             OnPropertiesChanged();
         }
     }
+
+
+    public bool InfoBarOpen
+    {
+        get => _InfoBarOpen;
+        set
+        {
+            _InfoBarOpen = value;
+            OnPropertiesChanged();
+        }
+    }
+
+    public string InfoBarTitle
+    {
+        get => _InfoBarTitle;
+        set
+        {
+            _InfoBarTitle = value;
+            OnPropertiesChanged();
+        }
+    }
+
+    public string InfoBarMessage
+    {
+        get => _InfoBarMessage;
+        set
+        {
+            _InfoBarMessage = value;
+            OnPropertiesChanged();
+        }
+    }
+
+    public InfoBarSeverity InfoBarSeverity
+    {
+        get => _InfoBarSeverity;
+        set
+        {
+            _InfoBarSeverity = value;
+            OnPropertiesChanged();
+        }
+    }
+    #endregion
 
     public ObservableCollection<string> BreadcrumbBarSource { get; } = new ObservableCollection<string>();
 
@@ -45,14 +94,33 @@ public sealed class ReadPageViewModel : NotificationObject
     /// <param name="articleNavigationInfo">准备过程使用的数据源</param>
     public async Task PreparePage(ArticleNavigationInfo articleNavigationInfo)
     {
-        VolumeInfo volumeInfo = await volumeProvider.GetVolumeInfoAsync(articleNavigationInfo.RawVolumeName);
+        try
+        {
+            VolumeInfo volumeInfo = await volumeProvider.GetVolumeInfoAsync(articleNavigationInfo.RawVolumeName);
 
-        BreadcrumbBarSource.Add("主页");
-        BreadcrumbBarSource.Add("期刊列表");
-        BreadcrumbBarSource.Add(volumeInfo.Name);
-        BreadcrumbBarSource.Add(articleNavigationInfo.ArticleTitle);
+            BreadcrumbBarSource.Add("主页");
+            BreadcrumbBarSource.Add("期刊列表");
+            BreadcrumbBarSource.Add(volumeInfo.Name);
+            BreadcrumbBarSource.Add(articleNavigationInfo.ArticleTitle);
 
-        ArticleDetail = await articleProvider.GetArticleAsync(articleNavigationInfo.RawVolumeName,
-                                                              articleNavigationInfo.ArticleTitle);
+            ArticleDetail = await articleProvider.GetArticleAsync(articleNavigationInfo.RawVolumeName,
+                                                                  articleNavigationInfo.ArticleTitle);
+        }
+        catch (DirectoryNotFoundException)
+        {
+            SetInfoBar("指定的文章无效", "请检查文章所属期刊是否正确", true, InfoBarSeverity.Error);
+        }
+        catch (ArgumentException)
+        {
+            SetInfoBar("指定的文章无效", "请检查文章名称是否正确", true, InfoBarSeverity.Error);
+        }
+    }
+
+    public void SetInfoBar(string title, string message, bool isOpen, InfoBarSeverity severity)
+    {
+        InfoBarTitle = title;
+        InfoBarMessage = message;
+        InfoBarSeverity = severity;
+        InfoBarOpen = isOpen;
     }
 }

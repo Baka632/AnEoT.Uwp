@@ -1,0 +1,40 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+img {
+    overflow-clip-margin: inherit;
+    overflow: clip;
+    max-width: 100%;
+}
+
+@font-face {
+    font-family: 'LXGW WenKai Screen';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('ms-appx-web:///Assets/Fonts/LXGWWenKaiScreen.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LXGW WenKai Screen R';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('ms-appx-web:///Assets/Fonts/LXGWWenKaiScreenR.ttf') format('truetype');
+}
