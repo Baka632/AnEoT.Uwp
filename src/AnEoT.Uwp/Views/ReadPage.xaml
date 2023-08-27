@@ -31,6 +31,7 @@
             Grid.Row="1"
             Margin="-5,0,0,0"
             VerticalAlignment="Top"
+            ItemClicked="OnBreadcrumbBarItemClicked"
             ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}">
             <muxc:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
@@ -49,43 +50,91 @@
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}" />
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <StackPanel.Resources>
+        <Grid Grid.Row="3">
+            <Grid.Resources>
+                <DataTemplate x:Name="TagOrCategoryDataTemplate" x:DataType="x:String">
+                    <ListViewItem MinWidth="0" Padding="10">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind}" />
+                    </ListViewItem>
+                </DataTemplate>
+
                 <Style TargetType="SymbolIcon">
                     <Setter Property="Margin" Value="0,0,5,0" />
                 </Style>
-            </StackPanel.Resources>
+                <Style TargetType="ListView">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="SelectionMode" Value="None" />
+                    <Setter Property="IsItemClickEnabled" Value="True" />
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
+                    <Setter Property="ItemTemplate" Value="{StaticResource TagOrCategoryDataTemplate}" />
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
 
-            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Column="0"
+                Margin="0,0,10,0"
+                Orientation="Horizontal">
                 <SymbolIcon Symbol="Contact" />
                 <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.ArticleDetail.Author, Mode=OneWay}" />
             </StackPanel>
 
-            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+            <StackPanel
+                Grid.Column="1"
+                Margin="0,0,10,0"
+                Orientation="Horizontal">
                 <SymbolIcon Symbol="Calendar" />
                 <TextBlock VerticalAlignment="Center" Text="{x:Bind helper:XamlHelper.DateTimeOffsetToFormatedString(ViewModel.ArticleDetail.Date), Mode=OneWay}" />
             </StackPanel>
 
-            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                <SymbolIcon Symbol="ViewAll" />
-                <GridView
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ItemsSource="{x:Bind ViewModel.ArticleDetail.Category, Mode=OneWay}"
-                    SelectionMode="None" />
-            </StackPanel>
+            <Grid
+                Grid.Column="2"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <SymbolIcon Symbol="Tag" />
-                <GridView
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ItemsSource="{x:Bind ViewModel.ArticleDetail.Tag, Mode=OneWay}"
-                    SelectionMode="None" />
-            </StackPanel>
-        </StackPanel>
+                <SymbolIcon Grid.Column="0" Symbol="ViewAll" />
+                <ListView
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.ArticleDetail.Category, Mode=OneWay}" />
+            </Grid>
+
+            <Grid Grid.Column="3" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <SymbolIcon Grid.Column="0" Symbol="Tag" />
+                <ListView
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.ArticleDetail.Tag, Mode=OneWay}" />
+            </Grid>
+        </Grid>
 
         <Grid Grid.Row="4" Margin="-8,0,0,0">
             <WebView

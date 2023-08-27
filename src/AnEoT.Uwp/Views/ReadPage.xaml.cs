@@ -4,6 +4,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using AnEoT.Uwp.Models.Navigation;
 using Markdig;
+using Microsoft.UI.Xaml.Controls;
 using WebMarkupMin.Core;
 
 namespace AnEoT.Uwp.Views;
@@ -62,5 +63,10 @@ public sealed partial class ReadPage : Page
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
+    }
+
+    private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+    {
+
     }
 }
