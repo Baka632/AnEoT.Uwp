@@ -18,6 +18,8 @@ namespace AnEoT.Uwp.Views.MainFrame
             MainReadPageFrame.Navigate(typeof(MainReadPage));
             MainSettingPageFrame.Navigate(typeof(MainSettingsPage));
             MainDownloadPageFrame.Navigate(typeof(MainDownloadPage));
+
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
     }
 }

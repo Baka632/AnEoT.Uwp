@@ -27,6 +27,9 @@ using Windows.UI.Notifications;
 using Windows.UI.Xaml.Shapes;
 using NotificationsVisualizerLibrary.Renderers;
 using NotificationsVisualizerLibrary.Parsers;
+using System.Windows.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -38,7 +41,7 @@ namespace NotificationsVisualizerLibrary
         Mobile
     }
 
-    public sealed partial class PreviewTile : UserControl
+    public sealed partial class PreviewTile : UserControl, INotifyPropertyChanged
     {
         private PreviewTileUpdater _tileUpdater;
         private PreviewBadgeUpdater _badgeUpdater;
@@ -564,6 +567,20 @@ namespace NotificationsVisualizerLibrary
 
         //Added
         public event RoutedEventHandler NewNotificationAnimationCompleted;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        private ICommand _Command;
+
+        public ICommand Command
+        {
+            get => _Command;
+            set
+            {
+                _Command = value;
+                OnPropertiesChanged(nameof(Command));
+            }
+        }
 
         /// <summary>
         /// Animates the tile to show this new content
@@ -771,6 +788,16 @@ namespace NotificationsVisualizerLibrary
         private void TileClick(object sender, RoutedEventArgs e)
         {
             Click?.Invoke(this, e);
+        }
+
+        //Added
+        /// <summary>
+        /// 通知运行时属性已经发生更改
+        /// </summary>
+        /// <param name="propertyName">发生更改的属性名称,其填充是自动完成的</param>
+        public void OnPropertiesChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

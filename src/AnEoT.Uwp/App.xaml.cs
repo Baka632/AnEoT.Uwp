@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using System.Net;
+using AnEoT.Uwp.Models.Navigation;
+using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.System.Profile;
@@ -47,6 +49,8 @@ sealed partial class App : Application
 
             // 将框架放在当前窗口中
             Window.Current.Content = rootFrame;
+
+            LoadMuxcResources();
         }
 
         if (e.PrelaunchActivated == false)
@@ -59,7 +63,69 @@ sealed partial class App : Application
             // 确保当前窗口处于活动状态
             Window.Current.Activate();
         }
+    }
 
+    protected override void OnActivated(IActivatedEventArgs args)
+    {
+        if (args.Kind == ActivationKind.Protocol)
+        {
+            ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
+            
+            if (eventArgs != null && eventArgs.Uri is not null)
+            {
+                Uri uri = eventArgs.Uri;
+                if (uri.Host.Equals("read", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (uri.Segments.Length >= 3)
+                    {
+                        string rawVolumeInfo = uri.Segments[1].Trim('/');
+                        string articleTitle = WebUtility.UrlDecode(uri.Segments[2].Trim('/'));
+                        ArticleNavigationInfo arg = new(rawVolumeInfo, articleTitle);
+                        NavigateToMainPageWithArgument(arg);
+                        return;
+                    }
+                }
+            }
+        }
+
+        //Fallback
+        NavigateToMainPage();
+    }
+
+    private void NavigateToMainPageWithArgument<T>(T arg)
+    {
+        if (Window.Current.Content is null)
+        {
+            LoadMuxcResources();
+            Frame rootFrame = new();
+            Window.Current.Content = rootFrame;
+
+            rootFrame.Navigate(typeof(MainPage), arg);
+
+            Window.Current.Activate();
+        }
+        else
+        {
+            NavigationHelper.Navigate(typeof(ReadPage), arg);
+        }
+    }
+    
+    private void NavigateToMainPage()
+    {
+        if (Window.Current.Content is null)
+        {
+            LoadMuxcResources();
+            Frame rootFrame = new();
+            Window.Current.Content = rootFrame;
+
+            rootFrame.Navigate(typeof(MainPage));
+
+            Window.Current.Activate();
+        }
+    }
+
+    private void LoadMuxcResources()
+    {
         bool isMobile = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile";
 
         XamlControlsResources muxcStyle = new()

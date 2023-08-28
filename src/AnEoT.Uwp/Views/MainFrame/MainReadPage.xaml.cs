@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AnEoT.Uwp.ViewModels.MainFrame;
+﻿using AnEoT.Uwp.ViewModels.MainFrame;
 using NotificationsVisualizerLibrary;
 using Windows.Data.Xml.Dom;
 
@@ -44,24 +43,12 @@ public sealed partial class MainReadPage : Page
         await SetLatestVolumeTile(_latestVolumeTileContents.First());
     }
 
-    private async void OnWelcomeTileClicked(object sender, RoutedEventArgs args)
-    {
-        Uri uri = new("https://aneot.terrach.net/posts/2022-06/intro.html");
-        await Windows.System.Launcher.LaunchUriAsync(uri);
-    }
-
     private async void ScrollViewer_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         if (e.Key == Windows.System.VirtualKey.R)
         {
             await SetupTile();
         }
-    }
-
-    private async void OnRssTileClicked(object sender, RoutedEventArgs args)
-    {
-        Uri uri = new("https://aneot.terrach.net/subscription.html");
-        await Windows.System.Launcher.LaunchUriAsync(uri);
     }
 
     private async void OnLatestVolumeTileNewAnimationCompleted(object sender, RoutedEventArgs e)

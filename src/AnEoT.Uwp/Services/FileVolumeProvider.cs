@@ -1,5 +1,6 @@
 ﻿using AnEoT.Uwp.Contracts;
 using AnEoT.Uwp.Helpers.Comparer;
+using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
 
@@ -33,7 +34,7 @@ public readonly struct FileVolumeProvider : IVolumeProvider
     public async Task<VolumeDetail> GetVolumeAsync(string volume)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
-        StorageFolder volumeFolder = await baseFolder.GetFolderAsync(volume);
+        StorageFolder volumeFolder = await GetVolumeFolder(volume,baseFolder);
         return await GetVolumeDetailFromStorageFolderAsync(volumeFolder);
     }
 
@@ -41,7 +42,7 @@ public readonly struct FileVolumeProvider : IVolumeProvider
     public async Task<VolumeInfo> GetVolumeInfoAsync(string volume)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
-        StorageFolder volumeFolder = await baseFolder.GetFolderAsync(volume);
+        StorageFolder volumeFolder = await GetVolumeFolder(volume, baseFolder);
         return await GetVolumeInfoFromStorageFolderAsync(volumeFolder);
     }
 
@@ -87,7 +88,7 @@ public readonly struct FileVolumeProvider : IVolumeProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (file.Name == "README.md")
+                if (file.Name.Equals("README.md", StringComparison.OrdinalIgnoreCase))
                 {
                     volumeTitle = result.Title;
                 }
@@ -133,7 +134,7 @@ public readonly struct FileVolumeProvider : IVolumeProvider
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (file.Name == "README.md")
+                if (file.Name.Equals("README.md", StringComparison.OrdinalIgnoreCase))
                 {
                     volumeTitle = result.Title;
                 }
@@ -163,5 +164,16 @@ public readonly struct FileVolumeProvider : IVolumeProvider
         {
             throw new ArgumentException("使用指定的参数，无法获取指定期刊的信息");
         }
+    }
+
+    private static async Task<StorageFolder> GetVolumeFolder(string volume, StorageFolder baseFolder)
+    {
+        string volumeFolderPath = Path.Combine(baseFolder.Path, volume);
+        if (Directory.Exists(volumeFolderPath) != true)
+        {
+            throw new DirectoryNotFoundException($"路径 {volumeFolderPath} 不存在");
+        }
+
+        return await baseFolder.GetFolderAsync(volume);
     }
 }

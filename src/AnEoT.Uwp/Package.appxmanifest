@@ -9,7 +9,7 @@
   <Identity
     Name="34386826-6168-4725-823f-8e2e6b8b3939"
     Publisher="CN=Baka632"
-    Version="1.0.1.0" />
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="34386826-6168-4725-823f-8e2e6b8b3939" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -47,6 +47,13 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
         <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="aneot-uwp">
+            <uap:DisplayName>ms-resource:AppDisplayName</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
