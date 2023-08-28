@@ -16,13 +16,8 @@ public sealed class ReadPageViewModel : NotificationObject
     private readonly StorageFolder assetsFolder;
     private readonly IVolumeProvider volumeProvider;
     private readonly IArticleProvider articleProvider;
-
-    #region InfoBar Props & Fields
     private ArticleDetail _ArticleDetail;
-    private bool _InfoBarOpen;
-    private string _InfoBarTitle;
-    private string _InfoBarMessage;
-    private InfoBarSeverity _InfoBarSeverity;
+    private VolumeInfo _VolumeInfo;
 
     public ArticleDetail ArticleDetail
     {
@@ -33,7 +28,23 @@ public sealed class ReadPageViewModel : NotificationObject
             OnPropertiesChanged();
         }
     }
+    
+    public VolumeInfo VolumeInfo
+    {
+        get => _VolumeInfo;
+        set
+        {
+            _VolumeInfo = value;
+            OnPropertiesChanged();
+        }
+    }
 
+    #region InfoBar Props & Fields
+
+    private bool _InfoBarOpen;
+    private string _InfoBarTitle;
+    private string _InfoBarMessage;
+    private InfoBarSeverity _InfoBarSeverity;
 
     public bool InfoBarOpen
     {
@@ -105,6 +116,7 @@ public sealed class ReadPageViewModel : NotificationObject
 
             ArticleDetail = await articleProvider.GetArticleAsync(articleNavigationInfo.RawVolumeName,
                                                                   articleNavigationInfo.ArticleTitle);
+            VolumeInfo = volumeInfo;
         }
         catch (DirectoryNotFoundException)
         {

@@ -2,6 +2,7 @@
 
 using System.Net;
 using System.Text.RegularExpressions;
+using AnEoT.Uwp.Helpers.CustomMarkdown;
 using AnEoT.Uwp.Models.Navigation;
 using Markdig;
 using Microsoft.UI.Xaml.Controls;
@@ -39,18 +40,23 @@ public sealed partial class ReadPage : Page
             SolidColorBrush colorBrush = (SolidColorBrush)Resources["SystemControlForegroundBaseHighBrush"];
             Windows.UI.Color textColor = colorBrush.Color;
 
-            string content = Markdown.ToHtml(ViewModel.ArticleDetail.MarkdownContent, MarkdownHelper.Pipeline);
+            VolumeInfo volumeInfo = ViewModel.VolumeInfo;
+            CustomMarkdownParser parser = new(false, false, $"ms-appx-web:///Assets/Test/posts/{volumeInfo.RawName}");
+            string content = parser.Parse(ViewModel.ArticleDetail.MarkdownContent);
+
             string html = $"<div>{content}</div>";
             HtmlMinifier htmlMinifier = new();
             MarkupMinificationResult result = htmlMinifier.Minify(html);
 
             try
             {
+                //添加主内容
                 await sender.InvokeScriptAsync("eval", new[]
                 {
                     $"document.getElementById('mainContent').insertAdjacentHTML('afterbegin', '{result.MinifiedContent}')",
                 });
 
+                //设置文本颜色
                 await sender.InvokeScriptAsync("eval", new[]
                 {
                     $"document.getElementById('mainContent').style.color = 'rgb({textColor.R}, {textColor.G}, {textColor.B})'",

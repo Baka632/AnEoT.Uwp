@@ -137,6 +137,13 @@
     </Compile>
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="Helpers\AcrylicHelper.cs" />
+    <Compile Include="Helpers\CustomMarkdown\CustomMarkdownParser.cs" />
+    <Compile Include="Helpers\CustomMarkdown\IMarkdownParser.cs" />
+    <Compile Include="Helpers\CustomMarkdown\MarkdownParserBase.cs" />
+    <Compile Include="Helpers\CustomMarkdown\MarkdownParserMarkDig.cs" />
+    <Compile Include="Helpers\CustomMarkdown\Renderer\CustomHtmlRenderer.cs" />
+    <Compile Include="Helpers\CustomMarkdown\Renderer\CustomLinkInlineRenderer.cs" />
+    <Compile Include="Helpers\CustomMarkdown\StringUtils.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="Helpers\Comparer\ArticleDetailOrInfoComparer.cs" />
     <Compile Include="Helpers\MarkdownHelper.cs" />
@@ -358,7 +365,7 @@
     <Content Include="Assets\Test\posts\2023-08\res\ope_sec\q9_4.webp" />
     <Content Include="Assets\Test\posts\2023-08\res\ope_sec\topic.webp" />
     <Content Include="Assets\Web\Html\MarkdownPageTemplate.html" />
-    <Content Include="Assets\Web\Js\pageload.js" />
+    <Content Include="Assets\Web\Js\page.js" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
