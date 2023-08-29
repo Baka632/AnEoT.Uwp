@@ -1,4 +1,4 @@
-﻿using AnEoT.Vintage.Helpers.Custom.Renderer;
+﻿using AnEoT.Uwp.Helpers.CustomMarkdown.Renderer;
 using Markdig.Renderers;
 
 namespace AnEoT.Uwp.Helpers.CustomMarkdown

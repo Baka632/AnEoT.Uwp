@@ -13,7 +13,7 @@
 
     <Grid Margin="11,0,0,0">
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VSG">
+            <VisualStateGroup>
                 <VisualState x:Name="Narrow">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />

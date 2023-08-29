@@ -1,6 +1,5 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-using AnEoT.Uwp.Models.Navigation;
 using Microsoft.UI.Xaml.Controls;
 
 namespace AnEoT.Uwp.Views;
@@ -10,11 +9,14 @@ namespace AnEoT.Uwp.Views;
 /// </summary>
 public sealed partial class VolumePage : Page
 {
-    public VolumePageViewModel ViewModel { get; } = new VolumePageViewModel();
+    public VolumePageViewModel ViewModel { get; }
+    internal readonly VolumePage Self;
 
     public VolumePage()
     {
         this.InitializeComponent();
+        Self = this;
+        ViewModel = new VolumePageViewModel(ContentTextBlock.Inlines);
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)

@@ -101,5 +101,9 @@ public sealed partial class MainPage : Page
         {
             NavigationHelper.Navigate(typeof(ReadPage), info);
         }
+        else if (e.Parameter is string rawVolumeInfo && string.IsNullOrWhiteSpace(rawVolumeInfo) != true)
+        {
+            NavigationHelper.Navigate(typeof(VolumePage), rawVolumeInfo);
+        }
     }
 }

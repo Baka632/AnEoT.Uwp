@@ -30,4 +30,18 @@ internal static class FileHelper
         Uri coverUri = new(new Uri(baseUri, UriKind.Absolute), imgLink.Url);
         return coverUri;
     }
+
+    /// <summary>
+    /// 获取指定期刊的目录页
+    /// </summary>
+    /// <param name="volumeRawName">期刊原始名称</param>
+    /// <returns>指定期刊目录页的 Markdown 字符串</returns>
+    public static async Task<string> GetVolumeReadmeMarkdown(string volumeRawName)
+    {
+        string readmeFileUri = $"ms-appx:///Assets/Test/posts/{volumeRawName}/README.md";
+        StorageFile readmeFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(readmeFileUri));
+        string readmeMarkdown = await FileIO.ReadTextAsync(readmeFile);
+
+        return readmeMarkdown;
+    }
 }

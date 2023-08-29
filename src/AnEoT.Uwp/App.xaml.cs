@@ -76,12 +76,19 @@ sealed partial class App : Application
                 Uri uri = eventArgs.Uri;
                 if (uri.Host.Equals("read", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (uri.Segments.Length >= 3)
+                    if (uri.Segments.Length == 3)
+                    {
+                        //Article read
+                        string rawVolumeInfo = uri.Segments[1].Trim('/');
+                        string articleTitle = uri.Segments[2].Trim('/').TrimEnd(".html".ToCharArray());
+                        ArticleNavigationInfo arg = new(rawVolumeInfo, articleTitle);
+                        ArticleNavigation(arg);
+                        return;
+                    }
+                    else if (uri.Segments.Length == 2)
                     {
                         string rawVolumeInfo = uri.Segments[1].Trim('/');
-                        string articleTitle = WebUtility.UrlDecode(uri.Segments[2].Trim('/'));
-                        ArticleNavigationInfo arg = new(rawVolumeInfo, articleTitle);
-                        NavigateToMainPageWithArgument(arg);
+                        VolumeNavigation(rawVolumeInfo);
                         return;
                     }
                 }
@@ -92,7 +99,7 @@ sealed partial class App : Application
         NavigateToMainPage();
     }
 
-    private void NavigateToMainPageWithArgument<T>(T arg)
+    private void ArticleNavigation(ArticleNavigationInfo arg)
     {
         if (Window.Current.Content is null)
         {
@@ -107,6 +114,24 @@ sealed partial class App : Application
         else
         {
             NavigationHelper.Navigate(typeof(ReadPage), arg);
+        }
+    }
+    
+    private void VolumeNavigation(string arg)
+    {
+        if (Window.Current.Content is null)
+        {
+            LoadMuxcResources();
+            Frame rootFrame = new();
+            Window.Current.Content = rootFrame;
+
+            rootFrame.Navigate(typeof(MainPage), arg);
+
+            Window.Current.Activate();
+        }
+        else
+        {
+            NavigationHelper.Navigate(typeof(VolumePage), arg);
         }
     }
     
