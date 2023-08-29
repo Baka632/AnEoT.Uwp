@@ -27,6 +27,7 @@ public sealed class MainReadPageViewModel : NotificationObject
 
     public DelegateCommand GoToRssSiteCommand { get; }
     public DelegateCommand GoToWelcomeArticleCommand { get; }
+    public DelegateCommand GoToLatestVolumeCommand { get; }
 
     public MainReadPageViewModel()
     {
@@ -45,6 +46,12 @@ public sealed class MainReadPageViewModel : NotificationObject
         GoToWelcomeArticleCommand = new DelegateCommand(obj =>
         {
             NavigationHelper.Navigate(typeof(ReadPage), new ArticleNavigationInfo("2022-06", "卷首语"));
+        });
+
+        GoToLatestVolumeCommand = new DelegateCommand(async obj =>
+        {
+            VolumeDetail info = await volumeProvider.GetLatestVolumeAsync();
+            NavigationHelper.Navigate(typeof(VolumePage), info.RawName);
         });
     }
 

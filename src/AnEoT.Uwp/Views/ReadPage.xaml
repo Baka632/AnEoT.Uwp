@@ -12,6 +12,47 @@
     mc:Ignorable="d">
 
     <Grid Margin="11,0,0,0">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VSG">
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AuthorContainer.Margin" Value="0,0,0,15" />
+                        <Setter Target="DateContainer.Margin" Value="0,0,0,5" />
+
+                        <Setter Target="AuthorContainer.(Grid.Row)" Value="0" />
+                        <Setter Target="DateContainer.(Grid.Row)" Value="1" />
+                        <Setter Target="CategoryContainer.(Grid.Row)" Value="2" />
+                        <Setter Target="TagContainer.(Grid.Row)" Value="3" />
+
+                        <Setter Target="AuthorContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="DateContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="CategoryContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="TagContainer.(Grid.Column)" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AuthorContainer.(Grid.Row)" Value="0" />
+                        <Setter Target="DateContainer.(Grid.Row)" Value="0" />
+                        <Setter Target="CategoryContainer.(Grid.Row)" Value="0" />
+                        <Setter Target="TagContainer.(Grid.Row)" Value="0" />
+
+                        <Setter Target="AuthorContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="DateContainer.(Grid.Column)" Value="1" />
+                        <Setter Target="CategoryContainer.(Grid.Column)" Value="2" />
+                        <Setter Target="TagContainer.(Grid.Column)" Value="3" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -47,6 +88,7 @@
 
         <TextBlock
             Grid.Row="2"
+            Margin="0,0,0,10"
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}" />
 
@@ -90,39 +132,46 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
             <StackPanel
-                Grid.Column="0"
+                x:Name="AuthorContainer"
                 Margin="0,0,10,0"
                 Orientation="Horizontal">
                 <SymbolIcon Symbol="Contact" />
-                <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.ArticleDetail.Author, Mode=OneWay}" />
+                <TextBlock
+                    Margin="9,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ViewModel.ArticleDetail.Author, Mode=OneWay}" />
             </StackPanel>
 
             <StackPanel
-                Grid.Column="1"
+                x:Name="DateContainer"
                 Margin="0,0,10,0"
                 Orientation="Horizontal">
                 <SymbolIcon Symbol="Calendar" />
-                <TextBlock VerticalAlignment="Center" Text="{x:Bind helper:XamlHelper.DateTimeOffsetToFormatedString(ViewModel.ArticleDetail.Date), Mode=OneWay}" />
+                <TextBlock
+                    Margin="9,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind helper:XamlHelper.DateTimeOffsetToFormatedString(ViewModel.ArticleDetail.Date), Mode=OneWay}" />
             </StackPanel>
 
-            <Grid
-                Grid.Column="2"
-                Margin="0,0,10,0"
-                HorizontalAlignment="Stretch">
+            <Grid x:Name="CategoryContainer" Margin="0,0,10,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
                 <SymbolIcon Grid.Column="0" Symbol="ViewAll" />
-                <ListView
-                    Grid.Column="1"
-                    HorizontalAlignment="Stretch"
-                    ItemsSource="{x:Bind ViewModel.ArticleDetail.Category, Mode=OneWay}" />
+                <ListView Grid.Column="1" ItemsSource="{x:Bind ViewModel.ArticleDetail.Category, Mode=OneWay}" />
             </Grid>
 
-            <Grid Grid.Column="3" HorizontalAlignment="Stretch">
+            <Grid x:Name="TagContainer">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
