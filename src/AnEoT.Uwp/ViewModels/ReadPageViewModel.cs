@@ -87,7 +87,7 @@ public sealed class ReadPageViewModel : NotificationObject
     }
     #endregion
 
-    public ObservableCollection<string> BreadcrumbBarSource { get; } = new ObservableCollection<string>();
+    public ObservableCollection<BreadcrumbBarItemInfo> BreadcrumbBarSource { get; } = new ();
 
     public ReadPageViewModel()
     {
@@ -113,10 +113,23 @@ public sealed class ReadPageViewModel : NotificationObject
                                                                   articleNavigationInfo.ArticleRawName);
             VolumeInfo = volumeInfo;
 
-            BreadcrumbBarSource.Add("主页");
-            BreadcrumbBarSource.Add("期刊列表");
-            BreadcrumbBarSource.Add(volumeInfo.Name);
-            BreadcrumbBarSource.Add(ArticleDetail.Title);
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo("主页", () =>
+            {
+                NavigationHelper.Navigate(typeof(Views.MainFrame.MainFrame), null);
+            }));
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo("期刊列表", () =>
+            {
+                //TODO: Impl Volume list
+                //NavigationHelper.Navigate(typeof(), null);
+            }));
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo(volumeInfo.Name, () =>
+            {
+                NavigationHelper.Navigate(typeof(VolumePage), volumeInfo.RawName);
+            }));
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo(ArticleDetail.Title, () =>
+            {
+                NavigationHelper.Navigate(typeof(ReadPage), articleNavigationInfo.ArticleRawName);
+            }));
         }
         catch (DirectoryNotFoundException)
         {

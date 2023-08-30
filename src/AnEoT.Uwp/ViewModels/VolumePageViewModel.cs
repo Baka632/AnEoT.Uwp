@@ -104,7 +104,7 @@ public sealed class VolumePageViewModel : NotificationObject
     }
     #endregion
 
-    public ObservableCollection<string> BreadcrumbBarSource { get; } = new ObservableCollection<string>();
+    public ObservableCollection<BreadcrumbBarItemInfo> BreadcrumbBarSource { get; } = new();
 
     /// <summary>
     /// 准备页面内容
@@ -116,9 +116,19 @@ public sealed class VolumePageViewModel : NotificationObject
         {
             VolumeInfo volumeInfo = await volumeProvider.GetVolumeInfoAsync(volumeRawName);
 
-            BreadcrumbBarSource.Add("主页");
-            BreadcrumbBarSource.Add("期刊列表");
-            BreadcrumbBarSource.Add(volumeInfo.Name);
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo("主页", () =>
+            {
+                NavigationHelper.Navigate(typeof(Views.MainFrame.MainFrame), null);
+            }));
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo("期刊列表", () =>
+            {
+                //TODO: Impl Volume list
+                //NavigationHelper.Navigate(typeof(), null);
+            }));
+            BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo(volumeInfo.Name, () =>
+            {
+                NavigationHelper.Navigate(typeof(VolumePage), volumeInfo.RawName);
+            }));
             VolumeInfo = volumeInfo;
 
             Uri uri = await FileHelper.GetVolumeCover(volumeInfo.RawName);

@@ -67,6 +67,9 @@ public sealed partial class ReadPage : Page
 
     private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
     {
-
+        if (args.Item is BreadcrumbBarItemInfo itemInfo)
+        {
+            itemInfo.ClickAction?.Invoke();
+        }
     }
 }

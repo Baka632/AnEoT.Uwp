@@ -6,6 +6,7 @@
     xmlns:helper="using:AnEoT.Uwp.Helpers"
     xmlns:local="using:AnEoT.Uwp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:AnEoT.Uwp.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:AnEoT.Uwp.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:ReadPageViewModel}"
@@ -75,13 +76,13 @@
             ItemClicked="OnBreadcrumbBarItemClicked"
             ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}">
             <muxc:BreadcrumbBar.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
+                <DataTemplate x:DataType="models:BreadcrumbBarItemInfo">
                     <TextBlock
                         Margin="5,5,5,10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontSize="20"
-                        Text="{x:Bind}" />
+                        Text="{x:Bind DisplayName}" />
                 </DataTemplate>
             </muxc:BreadcrumbBar.ItemTemplate>
         </muxc:BreadcrumbBar>
