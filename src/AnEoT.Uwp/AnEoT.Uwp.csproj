@@ -158,7 +158,6 @@
     <Compile Include="Helpers\YamlHelper.cs" />
     <Compile Include="Models\ArticleDetail.cs" />
     <Compile Include="Models\ArticleInfo.cs" />
-    <Compile Include="Models\ArticleTreeViewItem.cs" />
     <Compile Include="Models\Markdown\MarkdownArticleInfo.cs" />
     <Compile Include="Models\Navigation\ArticleNavigationInfo.cs" />
     <Compile Include="Models\Tile\TileTemplateType.cs" />
