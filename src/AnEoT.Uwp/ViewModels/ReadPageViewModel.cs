@@ -109,14 +109,14 @@ public sealed class ReadPageViewModel : NotificationObject
         {
             VolumeInfo volumeInfo = await volumeProvider.GetVolumeInfoAsync(articleNavigationInfo.RawVolumeName);
 
+            ArticleDetail = await articleProvider.GetArticleAsync(articleNavigationInfo.RawVolumeName,
+                                                                  articleNavigationInfo.ArticleRawName);
+            VolumeInfo = volumeInfo;
+
             BreadcrumbBarSource.Add("主页");
             BreadcrumbBarSource.Add("期刊列表");
             BreadcrumbBarSource.Add(volumeInfo.Name);
-            BreadcrumbBarSource.Add(articleNavigationInfo.ArticleTitle);
-
-            ArticleDetail = await articleProvider.GetArticleAsync(articleNavigationInfo.RawVolumeName,
-                                                                  articleNavigationInfo.ArticleTitle);
-            VolumeInfo = volumeInfo;
+            BreadcrumbBarSource.Add(ArticleDetail.Title);
         }
         catch (DirectoryNotFoundException)
         {

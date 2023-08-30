@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AnEoT.Uwp.Contracts;
+﻿using AnEoT.Uwp.Contracts;
 using AnEoT.Uwp.Models.Navigation;
 using AnEoT.Uwp.Services;
 using Markdig;
@@ -13,6 +12,7 @@ using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml.Markup;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace AnEoT.Uwp.ViewModels.MainFrame;
 
@@ -23,10 +23,10 @@ public sealed class MainReadPageViewModel : NotificationObject
 {
     private readonly StorageFolder assetsFolder;
     private readonly IVolumeProvider volumeProvider;
-    private readonly IArticleProvider articleProvider;
 
     public DelegateCommand GoToRssSiteCommand { get; }
     public DelegateCommand GoToWelcomeArticleCommand { get; }
+    public DelegateCommand GoToLatestVolumeCommand { get; }
 
     public MainReadPageViewModel()
     {
@@ -35,7 +35,6 @@ public sealed class MainReadPageViewModel : NotificationObject
         StorageFolder postsFolder = testFolder.GetFolderAsync("posts").AsTask().Result;
 
         volumeProvider = new FileVolumeProvider(postsFolder.Path);
-        articleProvider = new FileArticleProvider(postsFolder.Path);
 
         GoToRssSiteCommand = new DelegateCommand(async obj =>
         {
@@ -44,7 +43,13 @@ public sealed class MainReadPageViewModel : NotificationObject
 
         GoToWelcomeArticleCommand = new DelegateCommand(obj =>
         {
-            NavigationHelper.Navigate(typeof(ReadPage), new ArticleNavigationInfo("2022-06", "卷首语"));
+            NavigationHelper.Navigate(typeof(ReadPage), new ArticleNavigationInfo("2022-06", "intro"), new DrillInNavigationTransitionInfo());
+        });
+
+        GoToLatestVolumeCommand = new DelegateCommand(async obj =>
+        {
+            VolumeDetail info = await volumeProvider.GetLatestVolumeAsync();
+            NavigationHelper.Navigate(typeof(VolumePage), info.RawName, new DrillInNavigationTransitionInfo());
         });
     }
 

@@ -1,8 +1,7 @@
-﻿using AnEoT.Uwp.Helpers.CustomMarkdown.Renderer;
-using Markdig.Renderers;
+﻿using Markdig.Renderers;
 using Markdig.Renderers.Html.Inlines;
 
-namespace AnEoT.Vintage.Helpers.Custom.Renderer
+namespace AnEoT.Uwp.Helpers.CustomMarkdown.Renderer
 {
     /// <summary>
     /// 自定义的HTML渲染器

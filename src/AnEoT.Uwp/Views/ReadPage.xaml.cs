@@ -1,12 +1,8 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-using System.Net;
-using System.Text.RegularExpressions;
 using AnEoT.Uwp.Helpers.CustomMarkdown;
 using AnEoT.Uwp.Models.Navigation;
-using Markdig;
 using Microsoft.UI.Xaml.Controls;
-using WebMarkupMin.Core;
 
 namespace AnEoT.Uwp.Views;
 
@@ -45,15 +41,13 @@ public sealed partial class ReadPage : Page
             string content = parser.Parse(ViewModel.ArticleDetail.MarkdownContent);
 
             string html = $"<div>{content}</div>";
-            HtmlMinifier htmlMinifier = new();
-            MarkupMinificationResult result = htmlMinifier.Minify(html);
 
             try
             {
                 //添加主内容
                 await sender.InvokeScriptAsync("eval", new[]
                 {
-                    $"document.getElementById('mainContent').insertAdjacentHTML('afterbegin', '{result.MinifiedContent}')",
+                    $"document.getElementById('mainContent').innerHTML = `{html}`",
                 });
 
                 //设置文本颜色

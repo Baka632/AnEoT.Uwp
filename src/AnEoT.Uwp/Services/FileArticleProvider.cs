@@ -2,7 +2,6 @@
 using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
-using YamlDotNet.Core.Tokens;
 
 namespace AnEoT.Uwp.Services;
 
@@ -31,64 +30,69 @@ public readonly struct FileArticleProvider : IArticleProvider
     }
 
     /// <inheritdoc/>
-    public async Task<ArticleDetail> GetArticleAsync(string volume, string title)
+    public async Task<ArticleDetail> GetArticleAsync(string volume, string article)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
         StorageFolder volumeFolder = await GetVolumeFolder(volume, baseFolder);
 
-        return await GetArticleDetailFromStorageFolderAsync(volumeFolder, title);
+        return await GetArticleDetailFromStorageFolderAsync(volumeFolder, article);
     }
 
     /// <inheritdoc/>
-    public async Task<ArticleInfo> GetArticleInfoAsync(string volume, string title)
+    public async Task<ArticleInfo> GetArticleInfoAsync(string volume, string article)
     {
         StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
         StorageFolder volumeFolder = await GetVolumeFolder(volume, baseFolder);
 
-        return await GetArticleInfoFromStorageFolderAsync(volumeFolder, title);
+        return await GetArticleInfoFromStorageFolderAsync(volumeFolder, article);
     }
 
-    private async Task<ArticleDetail> GetArticleDetailFromStorageFolderAsync(StorageFolder volumeFolder, string title)
+    private async Task<ArticleDetail> GetArticleDetailFromStorageFolderAsync(StorageFolder volumeFolder, string article)
     {
-        IEnumerable<StorageFile> fileList = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
-                    .Where(file => file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
+        StorageFile file = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
+                    .FirstOrDefault(file =>
+                    {
+                        return file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase) &&
+                                            string.Equals(file.DisplayName, article, StringComparison.OrdinalIgnoreCase);
+                    });
 
-        foreach (StorageFile file in fileList)
+        if (file is not null)
         {
             string markdown = await FileIO.ReadTextAsync(file);
 
             if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
             {
-                if (result.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
+                if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                 {
-                    if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
-                    {
-                        date = new DateTimeOffset();
-                    }
-
-                    string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
-                    ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date, markdown,
-                                                      result.Category, result.Tag, result.Order, result.ShortTitle);
-                    return articleDetail;
+                    date = new DateTimeOffset();
                 }
+
+                string description = string.IsNullOrWhiteSpace(result.Description) ? MarkdownHelper.GetArticleQuote(markdown) : result.Description;
+                ArticleDetail articleDetail = new(result.Title, result.Author ?? "Another end of Terra", description.Trim(), date, markdown,
+                                                  result.Category, result.Tag, result.Order, result.ShortTitle);
+                return articleDetail;
             }
         }
 
         throw new ArgumentException("使用指定的参数，无法获取指定文章");
     }
 
-    private async Task<ArticleInfo> GetArticleInfoFromStorageFolderAsync(StorageFolder volumeFolder, string title)
+    private async Task<ArticleInfo> GetArticleInfoFromStorageFolderAsync(StorageFolder volumeFolder, string article)
     {
-        IEnumerable<StorageFile> fileList = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
-                    .Where(file => file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
+        StorageFile file = (await volumeFolder.GetFilesAsync(CommonFileQuery.OrderByName))
+                    .FirstOrDefault(file =>
+                    {
+                        return file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(file.DisplayName, article, StringComparison.OrdinalIgnoreCase);
+                    });
 
-        foreach (StorageFile file in fileList)
+        if (file is not null)
         {
-            string markdown = await FileIO.ReadTextAsync(file);
-
-            if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
+            if (string.Equals(file.DisplayName, article, StringComparison.OrdinalIgnoreCase))
             {
-                if (result.Title.Equals(title, StringComparison.OrdinalIgnoreCase))
+                string markdown = await FileIO.ReadTextAsync(file);
+
+                if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
                 {
                     if (DateTimeOffset.TryParse(result.Date, out DateTimeOffset date) != true)
                     {
