@@ -60,14 +60,19 @@ public sealed partial class ReadPage : Page, INotifyPropertyChanged
             CustomMarkdownParser parser = new(false, false, $"ms-appx-web:///Assets/Test/posts/{volumeInfo.RawName}");
             string content = parser.Parse(ViewModel.ArticleDetail.MarkdownContent);
 
-            string html = $"<div>{content}</div>";
+            string html = 
+                $"""
+                <div>{content}</div>
+                """;
 
             try
             {
+                sender.ScriptNotify += SetLoadingToFalseAndRemoveEventListening;
+
                 //添加主内容
                 await sender.InvokeScriptAsync("eval", new[]
                 {
-                    $"document.getElementById('mainContent').innerHTML = `{html}`",
+                    $"document.getElementById('mainContent').insertAdjacentHTML('afterbegin', `{html}`);"
                 });
 
                 //设置文本颜色
@@ -82,6 +87,8 @@ public sealed partial class ReadPage : Page, INotifyPropertyChanged
 
                     await Launcher.LaunchUriAsync(args.Uri, DefaultLauncherOptionsForExternal);
                 };
+
+                await sender.InvokeScriptAsync("notifyWebView", Array.Empty<string>());
             }
             catch (Exception ex)
             {
@@ -92,7 +99,11 @@ public sealed partial class ReadPage : Page, INotifyPropertyChanged
             }
         }
 
-        IsLoading = false;
+        void SetLoadingToFalseAndRemoveEventListening(object sender, NotifyEventArgs e)
+        {
+            IsLoading = false;
+            ContentWebView.ScriptNotify -= SetLoadingToFalseAndRemoveEventListening;
+        }
     }
 
     private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
