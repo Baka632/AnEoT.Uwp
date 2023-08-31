@@ -1,17 +1,36 @@
 ﻿// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
+using System;
+using System.ComponentModel;
 using AnEoT.Uwp.Helpers.CustomMarkdown;
 using AnEoT.Uwp.Models.Navigation;
 using Microsoft.UI.Xaml.Controls;
+using Windows.System;
 
 namespace AnEoT.Uwp.Views;
 
 /// <summary>
 /// 可用于自身或导航至 Frame 内部的空白页。
 /// </summary>
-public sealed partial class ReadPage : Page
+public sealed partial class ReadPage : Page, INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler PropertyChanged;
+    private bool _IsLoading;
+    private readonly static LauncherOptions DefaultLauncherOptionsForExternal = new()
+    {
+        TreatAsUntrusted = true
+    };
+
     public ReadPageViewModel ViewModel { get; } = new ReadPageViewModel();
+    public bool IsLoading
+    {
+        get => _IsLoading;
+        set
+        {
+            _IsLoading = value;
+            OnPropertiesChanged();
+        }
+    }
 
     public ReadPage()
     {
@@ -24,6 +43,7 @@ public sealed partial class ReadPage : Page
 
         if (e.Parameter is ArticleNavigationInfo navigationInfo)
         {
+            IsLoading = true;
             await ViewModel.PreparePage(navigationInfo);
             ContentWebView.Navigate(new Uri("ms-appx-web:///Assets/Web/Html/MarkdownPageTemplate.html"));
         }
@@ -55,14 +75,24 @@ public sealed partial class ReadPage : Page
                 {
                     $"document.getElementById('mainContent').style.color = 'rgb({textColor.R}, {textColor.G}, {textColor.B})'",
                 });
+
+                sender.NavigationStarting += async (webView, args) =>
+                {
+                    args.Cancel = true;
+
+                    await Launcher.LaunchUriAsync(args.Uri, DefaultLauncherOptionsForExternal);
+                };
             }
             catch (Exception ex)
             {
                 //脚本出错了...
                 System.Diagnostics.Debug.WriteLine("[ReadPage] Exception occured!");
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+                IsLoading = false;
             }
         }
+
+        IsLoading = false;
     }
 
     private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
@@ -71,5 +101,19 @@ public sealed partial class ReadPage : Page
         {
             itemInfo.ClickAction?.Invoke();
         }
+    }
+
+    /// <summary>
+    /// 通知运行时属性已经发生更改
+    /// </summary>
+    /// <param name="propertyName">发生更改的属性名称,其填充是自动完成的</param>
+    public void OnPropertiesChanged([CallerMemberName] string propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private async void OnContentWebViewUnviewableContentIdentified(WebView sender, WebViewUnviewableContentIdentifiedEventArgs args)
+    {
+        await Launcher.LaunchUriAsync(args.Referrer, DefaultLauncherOptionsForExternal);
     }
 }

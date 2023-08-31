@@ -74,7 +74,8 @@
             Margin="-5,0,0,0"
             VerticalAlignment="Top"
             ItemClicked="OnBreadcrumbBarItemClicked"
-            ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}">
+            ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}"
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
             <muxc:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="models:BreadcrumbBarItemInfo">
                     <TextBlock
@@ -91,9 +92,10 @@
             Grid.Row="2"
             Margin="0,0,0,10"
             Style="{StaticResource TitleTextBlockStyle}"
-            Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}" />
+            Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}"
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}" />
 
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3" Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
             <Grid.Resources>
                 <DataTemplate x:Name="TagOrCategoryDataTemplate" x:DataType="x:String">
                     <ListViewItem MinWidth="0" Padding="10">
@@ -186,9 +188,13 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="4" Margin="-8,0,0,0">
+        <Grid
+            Grid.Row="4"
+            Margin="-8,0,0,0"
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
             <WebView
                 x:Name="ContentWebView"
+                UnviewableContentIdentified="OnContentWebViewUnviewableContentIdentified"
                 Width="{x:Bind Width, Mode=OneWay}"
                 Height="{x:Bind Height, Mode=OneWay}"
                 HorizontalAlignment="Stretch"
@@ -196,5 +202,13 @@
                 DefaultBackgroundColor="Transparent"
                 NavigationCompleted="OnNavigationCompleted" />
         </Grid>
+
+        <ProgressRing
+            Grid.Row="4"
+            Width="50"
+            Height="50"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsActive="{x:Bind IsLoading, Mode=OneWay}" />
     </Grid>
 </Page>

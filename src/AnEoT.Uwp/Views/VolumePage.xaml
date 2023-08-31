@@ -31,7 +31,8 @@
             Margin="-5,0,0,0"
             VerticalAlignment="Top"
             ItemClicked="OnBreadcrumbBarItemClicked"
-            ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}">
+            ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}"
+            Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
             <muxc:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="models:BreadcrumbBarItemInfo">
                     <TextBlock
@@ -44,7 +45,7 @@
             </muxc:BreadcrumbBar.ItemTemplate>
         </muxc:BreadcrumbBar>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Visibility="{x:Bind helpers:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="2*" />
@@ -86,5 +87,13 @@
                 </ScrollViewer>
             </Grid>
         </Grid>
+
+        <ProgressRing
+            Grid.Row="2"
+            Width="50"
+            Height="50"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsActive="{x:Bind IsLoading, Mode=OneWay}" />
     </Grid>
 </Page>
