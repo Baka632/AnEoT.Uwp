@@ -505,7 +505,6 @@
     <Content Include="Assets\Test\posts\2022-06\paintings.md" />
     <Content Include="Assets\Test\posts\2022-06\README.md" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\Fonts\LXGWWenKaiScreen.ttf" />
   </ItemGroup>

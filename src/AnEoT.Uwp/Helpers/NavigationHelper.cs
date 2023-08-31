@@ -13,20 +13,25 @@ public static class NavigationHelper
         NavigationManager.BackRequested += BackRequested;
     }
 
-    private static void BackRequested(object sender, BackRequestedEventArgs e) => GoBack();
+    private static void BackRequested(object sender, BackRequestedEventArgs e)
+    {
+        GoBack(e);
+    }
 
-    public static void GoBack()
+    public static void GoBack(BackRequestedEventArgs e)
     {
         if (CurrentFrame.CanGoBack)
         {
+            e.Handled = true;
             CurrentFrame.GoBack();
         }
     }
 
-    public static void GoForward()
+    public static void GoForward(BackRequestedEventArgs e)
     {
         if (CurrentFrame.CanGoForward)
         {
+            e.Handled = true;
             CurrentFrame.GoForward();
         }
     }
