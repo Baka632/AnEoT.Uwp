@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="34386826-6168-4725-823f-8e2e6b8b3939" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Another End of Terra (UWP)</DisplayName>
+    <DisplayName>ms-resource:AppDisplayName</DisplayName>
     <PublisherDisplayName>Baka632</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
