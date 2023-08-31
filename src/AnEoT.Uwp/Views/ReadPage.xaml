@@ -75,7 +75,7 @@
             VerticalAlignment="Top"
             ItemClicked="OnBreadcrumbBarItemClicked"
             ItemsSource="{x:Bind ViewModel.BreadcrumbBarSource}"
-            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}">
             <muxc:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="models:BreadcrumbBarItemInfo">
                     <TextBlock
@@ -93,9 +93,9 @@
             Margin="0,0,0,10"
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.ArticleDetail.Title, Mode=OneWay}"
-            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}" />
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}" />
 
-        <Grid Grid.Row="3" Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
+        <Grid Grid.Row="3" Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}">
             <Grid.Resources>
                 <DataTemplate x:Name="TagOrCategoryDataTemplate" x:DataType="x:String">
                     <ListViewItem MinWidth="0" Padding="10">
@@ -191,7 +191,7 @@
         <Grid
             Grid.Row="4"
             Margin="-8,0,0,0"
-            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(IsLoading), Mode=OneWay}">
+            Visibility="{x:Bind helper:XamlHelper.ReverseVisibility(ViewModel.IsLoading), Mode=OneWay}">
             <WebView
                 x:Name="ContentWebView"
                 UnviewableContentIdentified="OnContentWebViewUnviewableContentIdentified"
@@ -209,6 +209,6 @@
             Height="50"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            IsActive="{x:Bind IsLoading, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
     </Grid>
 </Page>

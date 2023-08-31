@@ -23,6 +23,7 @@ public sealed class MainReadPageViewModel : NotificationObject
 {
     private readonly StorageFolder assetsFolder;
     private readonly IVolumeProvider volumeProvider;
+    private readonly IResourceProvider resourceProvider;
 
     public DelegateCommand GoToRssSiteCommand { get; }
     public DelegateCommand GoToWelcomeArticleCommand { get; }
@@ -35,6 +36,7 @@ public sealed class MainReadPageViewModel : NotificationObject
         StorageFolder postsFolder = testFolder.GetFolderAsync("posts").AsTask().Result;
 
         volumeProvider = new FileVolumeProvider(postsFolder.Path);
+        resourceProvider = new FileResourceProvider();
 
         GoToRssSiteCommand = new DelegateCommand(async obj =>
         {
@@ -83,10 +85,10 @@ public sealed class MainReadPageViewModel : NotificationObject
 
             AdaptiveTileBuilder tileBuilder = new();
 
-            // HACK: 考虑使用其他方式获得图片Uri，而不是写死
             if (img is not null)
             {
-                string imgUri = $"ms-appx:///Assets/Test/posts/{info.RawName}/{img.Url}";
+                Uri uri = new(new Uri(resourceProvider.BaseUri, UriKind.Absolute), $"{info.RawName}/{img.Url}");
+                string imgUri = uri.ToString();
                 tileBuilder.TileLarge.AddBackgroundImage(imgUri, 60);
             }
 
