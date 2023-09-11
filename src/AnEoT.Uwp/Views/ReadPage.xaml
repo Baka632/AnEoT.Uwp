@@ -152,7 +152,9 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind ViewModel.ArticleDetail.Author, Mode=OneWay}">
                     <TextBlock.Transitions>
-                        <EntranceThemeTransition />
+                        <TransitionCollection>
+                            <EntranceThemeTransition />
+                        </TransitionCollection>
                     </TextBlock.Transitions>
                 </TextBlock>
             </StackPanel>
@@ -167,7 +169,9 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind helper:XamlHelper.DateTimeOffsetToFormatedString(ViewModel.ArticleDetail.Date), Mode=OneWay}">
                     <TextBlock.Transitions>
-                        <EntranceThemeTransition />
+                        <TransitionCollection>
+                            <EntranceThemeTransition />
+                        </TransitionCollection>
                     </TextBlock.Transitions>
                 </TextBlock>
             </StackPanel>

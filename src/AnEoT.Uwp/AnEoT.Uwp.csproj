@@ -23,10 +23,10 @@
     <PackageCertificateKeyFile />
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
     <Compile Include="ViewModels\ReadPageViewModel.cs" />
+    <Compile Include="ViewModels\VolumeListViewModel.cs" />
     <Compile Include="ViewModels\VolumePageViewModel.cs" />
     <Compile Include="Views\MainFrame\MainDownloadPage.xaml.cs">
       <DependentUpon>MainDownloadPage.xaml</DependentUpon>
@@ -192,6 +193,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ReadPage.xaml.cs">
       <DependentUpon>ReadPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VolumeList.xaml.cs">
+      <DependentUpon>VolumeList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VolumePage.xaml.cs">
       <DependentUpon>VolumePage.xaml</DependentUpon>
@@ -416,6 +420,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VolumeList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
