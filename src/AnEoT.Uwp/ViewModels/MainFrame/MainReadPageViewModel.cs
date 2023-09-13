@@ -28,6 +28,7 @@ public sealed class MainReadPageViewModel : NotificationObject
     public DelegateCommand GoToRssSiteCommand { get; }
     public DelegateCommand GoToWelcomeArticleCommand { get; }
     public DelegateCommand GoToLatestVolumeCommand { get; }
+    public DelegateCommand GoToVolumeListCommand { get; }
 
     public MainReadPageViewModel()
     {
@@ -52,6 +53,11 @@ public sealed class MainReadPageViewModel : NotificationObject
         {
             VolumeDetail info = await volumeProvider.GetLatestVolumeAsync();
             NavigationHelper.Navigate(typeof(VolumePage), info.RawName, new DrillInNavigationTransitionInfo());
+        });
+
+        GoToVolumeListCommand = new DelegateCommand(obj =>
+        {
+            NavigationHelper.Navigate(typeof(VolumeList), null, new DrillInNavigationTransitionInfo());
         });
     }
 

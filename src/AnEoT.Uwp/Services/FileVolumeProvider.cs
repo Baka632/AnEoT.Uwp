@@ -3,6 +3,7 @@ using AnEoT.Uwp.Helpers.Comparer;
 using AnEoT.Uwp.Models.Markdown;
 using Windows.Storage;
 using Windows.Storage.Search;
+using YamlDotNet.Core.Tokens;
 
 namespace AnEoT.Uwp.Services;
 
@@ -175,5 +176,51 @@ public readonly struct FileVolumeProvider : IVolumeProvider
         }
 
         return await baseFolder.GetFolderAsync(volume);
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<VolumeListItem>> GetVolumeListAsync()
+    {
+        StorageFolder baseFolder = await StorageFolder.GetFolderFromPathAsync(CurrentPath);
+        IReadOnlyList<StorageFolder> volumeFolders = await baseFolder.GetFoldersAsync();
+
+        if (volumeFolders.Any() is not true)
+        {
+            throw new ArgumentException("使用指定的参数，找不到任何期刊");
+        }
+
+        List<VolumeListItem> volumeList = new(volumeFolders.Count);
+
+        foreach (StorageFolder volFolder in volumeFolders)
+        {
+            StorageFile file = (await volFolder.GetFilesAsync())
+                .FirstOrDefault(file => file.Name.Equals("README.md", StringComparison.OrdinalIgnoreCase));
+
+            if (file is null)
+            {
+                continue;
+            }
+            
+            string markdown = await FileIO.ReadTextAsync(file);
+
+            if (MarkdownHelper.TryGetFromFrontMatter(markdown, out MarkdownArticleInfo result))
+            {
+                VolumeListItem volumeInfo = new(result.Title, volFolder.DisplayName, $"ms-appx:///Assets/Test/posts/{volFolder.DisplayName}/res/cover.webp");
+                volumeList.Add(volumeInfo);
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        if (volumeList.Any() is not true)
+        {
+            throw new ArgumentException("使用指定的参数，找不到任何期刊");
+        }
+
+        volumeList.OrderBy(item => item.RawName);
+
+        return volumeList;
     }
 }

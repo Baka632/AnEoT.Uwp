@@ -4,6 +4,8 @@
 
 A fanmade literary journal based on mobile game *Arknights*, redesigned for Windows 10 devices.
 
+Notice: This is an unoffcial project, and this project is still in preview.
+
 ## Build Instructions
 
 - Clone the repository locally
