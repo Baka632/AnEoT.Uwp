@@ -141,8 +141,7 @@ public sealed class ReadPageViewModel : NotificationObject
             }));
             BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo("期刊列表", () =>
             {
-                //TODO: Impl Volume list
-                //NavigationHelper.Navigate(typeof(), null);
+                NavigationHelper.Navigate(typeof(VolumeList), null);
             }));
             BreadcrumbBarSource.Add(new BreadcrumbBarItemInfo(volumeInfo.Name, () =>
             {

@@ -62,6 +62,7 @@
                     Margin="4,0,0,0">
                     <visualizer:PreviewTile
                         x:Name="VolumeListTile"
+                        Command="{x:Bind ViewModel.GoToVolumeListCommand, Mode=OneWay}"
                         DisplayName="期刊列表"
                         TileSize="Wide" />
                     <visualizer:PreviewTile

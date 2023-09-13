@@ -22,9 +22,24 @@ namespace AnEoT.Uwp.Views
     /// </summary>
     public sealed partial class VolumeList : Page
     {
+        public VolumeListViewModel ViewModel { get; } = new();
+
         public VolumeList()
         {
             this.InitializeComponent();
+        }
+
+        private void OnBreadcrumbBarItemClicked(Microsoft.UI.Xaml.Controls.BreadcrumbBar sender, Microsoft.UI.Xaml.Controls.BreadcrumbBarItemClickedEventArgs args)
+        {
+            if (args.Item is BreadcrumbBarItemInfo itemInfo)
+            {
+                itemInfo.ClickAction?.Invoke();
+            }
+        }
+
+        private async void OnPageLoading(FrameworkElement sender, object args)
+        {
+            await ViewModel.PreparePage();
         }
     }
 }

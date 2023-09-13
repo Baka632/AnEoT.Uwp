@@ -30,4 +30,10 @@ public interface IVolumeProvider
     /// </summary>
     /// <returns>最新期刊的信息</returns>
     Task<VolumeInfo> GetLatestVolumeInfoAsync();
+
+    /// <summary>
+    /// 获取所有期刊的列表
+    /// </summary>
+    /// <returns>期刊列表</returns>
+    Task<IEnumerable<VolumeListItem>> GetVolumeListAsync();
 }
